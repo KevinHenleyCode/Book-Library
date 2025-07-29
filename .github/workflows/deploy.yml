@@ -55,7 +55,7 @@ jobs:
 
             # Build and run new Docker Container
             docker build -t book-library .
-            docker run -d --name book-library -p 3001:3000 book-library
+            docker run -d --name book-library -p 3001:3000 --restart unless-stopped book-library
           EOF
 
       # 🔒 Revoke open SSH access after deployment
