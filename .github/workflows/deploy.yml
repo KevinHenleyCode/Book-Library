@@ -26,6 +26,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
+      # Setup SSH
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -33,7 +34,8 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to EC2
+      # Deploy and run Docker
+      - name: Deploy to EC2 with Docker
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
               set -e
@@ -46,8 +48,14 @@ jobs:
             fi
 
             git pull origin main
-            npm install
-            npm run build
+
+            # Stop and remove old container if it exists
+            docker stop book-library || true
+            docker rm book-library || true
+
+            # Build and run new Docker Container
+            docker build -t book-library .
+            docker run -d --name book-library -p 3001:3000 book-library
           EOF
 
       # 🔒 Revoke open SSH access after deployment
