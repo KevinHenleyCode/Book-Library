@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { useTheme } from 'next-themes'
 import { BsFillMoonStarsFill, BsSunFill } from 'react-icons/bs'
+import { saveBook } from '@/lib/libraryServices'
 
 const Home = () => {
   type Book = {
@@ -42,16 +43,28 @@ const Home = () => {
     }
   }
 
-  const test = (theme: boolean) => {
+  const themeToggle = (theme: boolean) => {
     setThemeBtn(!themeBtn)
     setTheme(theme === true ? 'dark' : 'light')
+  }
+
+  const handleSave = (bookChoice: any) => {
+    const book = {
+      id: bookChoice.id,
+      title: bookChoice.volumeInfo.title,
+      authors: bookChoice.volumeInfo.authors || [],
+      publisher: bookChoice.volumeInfo.publisher,
+      thumbnail: bookChoice.volumeInfo.imageLinks?.thumbnail,
+      createdAt: Date.now(),
+    }
+    saveBook(book)
   }
 
   return (
     <div className='flex flex-col items-center justify-center pt-10'>
       <span className='flex w-full justify-end px-20'>
         <Button
-          onClick={() => test(!themeBtn)}
+          onClick={() => themeToggle(!themeBtn)}
           className='hover:cursor-pointer'
         >
           {themeBtn ? <BsSunFill /> : <BsFillMoonStarsFill />}
@@ -80,6 +93,7 @@ const Home = () => {
             const info = books.volumeInfo
             return (
               <li key={books.id}>
+                <Button onClick={() => handleSave(books)}>Add Book</Button>
                 <Card className='h-full'>
                   <CardHeader>
                     <CardTitle className='text-2xl'>{info.title}</CardTitle>
