@@ -49,6 +49,8 @@ jobs:
 
             git pull origin main
 
+            rm -rf node_modules .next
+
             # Stop and remove old container if it exists
             docker stop book-library || true
             docker rm book-library || true
