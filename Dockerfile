@@ -3,6 +3,7 @@ FROM node:20-alpine AS deps
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY pnpm-lock.yaml package.json ./
+ENV PNPM_SKIP_BUILD_SCRIPT_CHECK=true
 RUN pnpm install --frozen-lockfile --ignore-scripts=false
 
 # 2. Build app

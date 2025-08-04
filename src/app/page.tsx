@@ -3,15 +3,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardAction,
-  CardDescription,
-  CardFooter,
-} from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { useTheme } from 'next-themes'
 import { BsFillMoonStarsFill, BsSunFill } from 'react-icons/bs'
 
