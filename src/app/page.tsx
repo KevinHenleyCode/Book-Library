@@ -8,8 +8,18 @@ import { useTheme } from 'next-themes'
 import { BsFillMoonStarsFill, BsSunFill } from 'react-icons/bs'
 
 const Home = () => {
+  type Book = {
+    id: string
+    volumeInfo: {
+      title: string
+      publisher: string
+      imageLinks: {
+        smallThumbnail: string
+      }
+    }
+  }
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState<any[]>([])
+  const [results, setResults] = useState<Book[]>([])
   const [themeBtn, setThemeBtn] = useState(true)
 
   const { setTheme } = useTheme()
