@@ -87,13 +87,15 @@ const Home = () => {
                       {info.publisher}
                     </CardContent>
                     <div className='mt-2 flex w-full justify-center'>
-                      <Image
-                        src={info.imageLinks.smallThumbnail}
-                        alt={info.title}
-                        width={100}
-                        height={100}
-                        className='rounded-sm shadow-md shadow-black'
-                      />
+                      {info?.imageLinks ? (
+                        <Image
+                          src={info?.imageLinks?.smallThumbnail}
+                          alt={info.title}
+                          width={100}
+                          height={100}
+                          className='rounded-sm shadow-md shadow-black'
+                        />
+                      ) : null}
                     </div>
                   </CardHeader>
                 </Card>
