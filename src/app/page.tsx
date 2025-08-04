@@ -1,13 +1,105 @@
 'use client'
+import { useState } from 'react'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardAction,
+  CardDescription,
+  CardFooter,
+} from '@/components/ui/card'
+import { useTheme } from 'next-themes'
+import { BsFillMoonStarsFill, BsSunFill } from 'react-icons/bs'
 
 const Home = () => {
+  const [query, setQuery] = useState('')
+  const [results, setResults] = useState<any[]>([])
+  const [themeBtn, setThemeBtn] = useState(true)
+
+  const { setTheme } = useTheme()
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    try {
+      const res = await fetch('/api/search-books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+      })
+
+      const result = await res.json()
+
+      setResults(result.data.items)
+    } catch (err) {
+      console.error(`Search Error: ${err}`)
+    }
+  }
+
+  const test = (theme: boolean) => {
+    setThemeBtn(!themeBtn)
+    setTheme(theme === true ? 'dark' : 'light')
+  }
+
   return (
-    <div className='grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-sans sm:p-20'>
-      <main className='row-start-2 flex flex-col items-center gap-[32px] sm:items-start'>
-        <h1 className='text-8xl font-bold text-purple-400 uppercase italic text-shadow-lg text-shadow-lime-300'>
-          The Library App
-        </h1>
-      </main>
+    <div className='flex flex-col items-center justify-center pt-10'>
+      <span className='flex w-full justify-end px-20'>
+        <Button
+          onClick={() => test(!themeBtn)}
+          className='hover:cursor-pointer'
+        >
+          {themeBtn ? <BsSunFill /> : <BsFillMoonStarsFill />}
+        </Button>
+      </span>
+      <h1 className='text-8xl font-bold uppercase italic text-shadow-lg'>
+        The Library App
+      </h1>
+      <section className='mt-20 flex justify-center'>
+        <form
+          onSubmit={handleSubmit}
+          className='flex w-full max-w-sm items-center gap-2'
+        >
+          <Input
+            type='text'
+            placeholder='Search Here'
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <Button type='submit'>Search</Button>
+        </form>
+      </section>
+      <section className='mt-10 flex w-full justify-center'>
+        <ul className='grid w-5/6 grid-cols-3 gap-4'>
+          {results.map((books) => {
+            const info = books.volumeInfo
+            return (
+              <li key={books.id}>
+                <Card className='h-full'>
+                  <CardHeader>
+                    <CardTitle className='text-2xl'>{info.title}</CardTitle>
+                    <CardContent className='text-lg'>
+                      {info.publisher}
+                    </CardContent>
+                    <div className='mt-2 flex w-full justify-center'>
+                      <Image
+                        src={info.imageLinks.smallThumbnail}
+                        alt={info.title}
+                        width={100}
+                        height={100}
+                        className='rounded-sm shadow-md shadow-black'
+                      />
+                    </div>
+                  </CardHeader>
+                </Card>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
     </div>
   )
 }
