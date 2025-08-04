@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  web:
+    container_name: book-library-dev
+    build:
+      context: .
+    command: pnpm dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules # Prevent node_modules overwrite
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
