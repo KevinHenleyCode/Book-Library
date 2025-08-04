@@ -10,10 +10,11 @@ RUN pnpm install --frozen-lockfile --ignore-scripts=false
 FROM node:20-alpine AS builder
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
+ARG GOOGLE_BOOKS_API_KEY
+ENV GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=deps /app/package.json ./package.json
-COPY .env.local .env.local
 COPY . .
 RUN pnpm build
 

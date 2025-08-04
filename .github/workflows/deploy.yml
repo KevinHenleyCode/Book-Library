@@ -63,7 +63,9 @@ jobs:
 
             # Build and run new Docker Container
             docker build --no-cache -t book-library .
-            docker run -d --name book-library -p 3001:3000 --restart unless-stopped book-library
+            docker run -d --name book-library \
+            --env NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY=${{ secrets.GOOGLE_BOOKS_API_KEY }} \
+            -p 3001:3000 --restart unless-stopped book-library
           EOF
 
       # 🔒 Revoke open SSH access after deployment
