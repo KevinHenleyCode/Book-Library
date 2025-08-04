@@ -37,8 +37,10 @@ jobs:
       # Deploy and run Docker
       - name: Deploy to EC2 with Docker
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-              set -e
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+            "GOOGLE_BOOKS_API_KEY=${{ secrets.GOOGLE_BOOKS_API_KEY }} bash -s" << 'EOF'
+            
+            set -e
               
             mkdir -p ${{ secrets.APP_DIR }}
             cd ${{ secrets.APP_DIR }}
@@ -63,9 +65,10 @@ jobs:
 
             # Build and run new Docker Container
             docker build --no-cache -t book-library .
+            
             docker run -d --name book-library \
-            --env NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY=${{ secrets.GOOGLE_BOOKS_API_KEY }} \
-            -p 3001:3000 --restart unless-stopped book-library
+              --env GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY \
+              -p 3001:3000 --restart unless-stopped book-library
           EOF
 
       # 🔒 Revoke open SSH access after deployment
