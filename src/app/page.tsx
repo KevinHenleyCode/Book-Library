@@ -7,9 +7,10 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { useTheme } from 'next-themes'
 import { BsFillMoonStarsFill, BsSunFill } from 'react-icons/bs'
 import { saveBook } from '@/lib/libraryServices'
+import type { Book } from '@/lib/db'
 
 const Home = () => {
-  type Book = {
+  type GoogleBook = {
     id: string
     volumeInfo: {
       title: string
@@ -20,7 +21,7 @@ const Home = () => {
     }
   }
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState<Book[]>([])
+  const [results, setResults] = useState<GoogleBook[]>([])
   const [themeBtn, setThemeBtn] = useState(true)
 
   const { setTheme } = useTheme()
@@ -49,7 +50,7 @@ const Home = () => {
   }
 
   const handleSave = (bookChoice: any) => {
-    const book = {
+    const book: Book = {
       id: bookChoice.id,
       title: bookChoice.volumeInfo.title,
       authors: bookChoice.volumeInfo.authors || [],
