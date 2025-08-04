@@ -89,7 +89,7 @@ const Home = () => {
                     <div className='mt-2 flex w-full justify-center'>
                       {info?.imageLinks ? (
                         <Image
-                          src={info?.imageLinks?.smallThumbnail}
+                          src={info.imageLinks.smallThumbnail}
                           alt={info.title}
                           width={100}
                           height={100}
