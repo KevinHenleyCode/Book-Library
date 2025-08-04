@@ -14,7 +14,8 @@ const Home = () => {
     id: string
     volumeInfo: {
       title: string
-      publisher: string
+      authors?: string[]
+      publisher?: string
       imageLinks: {
         smallThumbnail: string
       }
@@ -49,13 +50,13 @@ const Home = () => {
     setTheme(theme === true ? 'dark' : 'light')
   }
 
-  const handleSave = (bookChoice: any) => {
+  const handleSave = (bookChoice: GoogleBook) => {
     const book: Book = {
       id: bookChoice.id,
       title: bookChoice.volumeInfo.title,
       authors: bookChoice.volumeInfo.authors || [],
       publisher: bookChoice.volumeInfo.publisher,
-      thumbnail: bookChoice.volumeInfo.imageLinks?.thumbnail,
+      thumbnail: bookChoice.volumeInfo.imageLinks?.smallThumbnail,
       createdAt: Date.now(),
     }
     saveBook(book)
@@ -98,6 +99,9 @@ const Home = () => {
                 <Card className='h-full'>
                   <CardHeader>
                     <CardTitle className='text-2xl'>{info.title}</CardTitle>
+                    <CardContent className='text-lg'>
+                      {info.authors}
+                    </CardContent>
                     <CardContent className='text-lg'>
                       {info.publisher}
                     </CardContent>

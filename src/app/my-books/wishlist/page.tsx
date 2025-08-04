@@ -22,6 +22,9 @@ const WishList = () => {
                 <CardHeader>
                   <CardTitle className='text-2xl'>{book.title}</CardTitle>
                   <CardContent className='text-lg'>
+                    <p>{book.authors}</p>
+                  </CardContent>
+                  <CardContent className='text-lg'>
                     <p>{book.publisher}</p>
                   </CardContent>
                   <div className='mt-2 flex w-full justify-center'>
