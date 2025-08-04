@@ -3,7 +3,6 @@ node_modules
 Dockerfile
 docker-compose.yml
 .env
-.env.local
 .git
 *.pem
 .DS_Store
