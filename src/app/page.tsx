@@ -101,7 +101,7 @@ const Home = () => {
                 </Card>
               </li>
             )
-          })}
+          }) || []}
         </ul>
       </section>
     </div>
