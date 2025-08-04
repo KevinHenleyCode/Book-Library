@@ -55,6 +55,12 @@ jobs:
             docker stop book-library || true
             docker rm book-library || true
 
+            # Clean up old images of book-library only
+            docker images -q book-library | xargs -r docker rmi
+
+            # Remove dangling images
+            docker image prune -f
+
             # Build and run new Docker Container
             docker build --no-cache -t book-library .
             docker run -d --name book-library -p 3001:3000 --restart unless-stopped book-library
