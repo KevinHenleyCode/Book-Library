@@ -63,11 +63,15 @@ jobs:
             # Remove dangling images
             docker image prune -f
 
+            # Check if pnpm-store exists
+            docker volume create pnpm-store || true
+
             # Build and run new Docker Container
             docker build --no-cache -t book-library .
             
             docker run -d --name book-library \
               --env GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY \
+              -v pnpm-store:/pnpm-store \
               -p 3001:3000 --restart unless-stopped book-library
           EOF
 
