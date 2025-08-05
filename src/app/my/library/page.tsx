@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { getAllBooks } from '@/lib/libraryServices'
 import type { Book } from '@/lib/db'
 
-const WishList = () => {
+const Library = () => {
   const [books, setBooks] = useState<Book[]>([])
 
   useEffect(() => {
@@ -48,4 +48,4 @@ const WishList = () => {
   )
 }
 
-export default WishList
+export default Library

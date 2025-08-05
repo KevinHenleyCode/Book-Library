@@ -1,4 +1,4 @@
-const CACHE_NAME = 'book-library-v2'
+const CACHE_NAME = 'book-library-v3'
 
 self.addEventListener('install', (event) => {
   console.log('[SW] Install event')
@@ -6,7 +6,7 @@ self.addEventListener('install', (event) => {
 
   const urlsToCache = [
     '/',
-    '/my-books/wishlist',
+    '/my/library',
     '/offline.html',
     '/favicon.svg',
     '/icons/icon-128x128.png',
