@@ -34,36 +34,34 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>App</SidebarGroupLabel>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <SidebarMenuButton asChild>
-                        <Link href={item.url}>
-                          <item.icon />
-                          <span>{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </TooltipTrigger>
-                    <TooltipContent sideOffset={0}>{item.title}</TooltipContent>
-                  </Tooltip>
+                  <SidebarMenuButton asChild tooltip={item.title}>
+                    <Link href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarFooter className='absolute bottom-0 w-full'>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button size={'sm'} className='w-full'>
+        <SidebarFooter className='absolute bottom-4 w-full'>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                className='hover:cursor-pointer'
+                tooltip={'Create List'}
+              >
                 <ListPlus />
-              </Button>
-              <TooltipContent>Add List</TooltipContent>
-            </TooltipTrigger>
-          </Tooltip>
+                <span>Create List</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarFooter>
       </SidebarContent>
     </Sidebar>

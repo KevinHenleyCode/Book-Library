@@ -3,11 +3,18 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardAction,
+} from '@/components/ui/card'
 import { useTheme } from 'next-themes'
 import { BsFillMoonStarsFill, BsSunFill } from 'react-icons/bs'
 import { saveBook } from '@/lib/libraryServices'
 import type { Book } from '@/lib/db'
+import { BookmarkPlus } from 'lucide-react'
 
 const Home = () => {
   type GoogleBook = {
@@ -63,8 +70,8 @@ const Home = () => {
   }
 
   return (
-    <div className='flex flex-col items-center justify-center pt-10'>
-      <span className='flex w-full justify-end px-20'>
+    <div className='flex w-full flex-col items-center justify-center px-4 pt-10'>
+      <span className='flex w-full justify-center px-20'>
         <Button
           onClick={() => themeToggle(!themeBtn)}
           className='hover:cursor-pointer'
@@ -72,40 +79,43 @@ const Home = () => {
           {themeBtn ? <BsSunFill /> : <BsFillMoonStarsFill />}
         </Button>
       </span>
-      <h1 className='text-8xl font-bold uppercase italic text-shadow-lg'>
+      <h1 className='mt-10 text-4xl font-bold uppercase italic text-shadow-lg'>
         The Library App
       </h1>
-      <section className='mt-20 flex justify-center'>
-        <form
-          onSubmit={handleSubmit}
-          className='flex w-full max-w-sm items-center gap-2'
-        >
-          <Input
-            type='text'
-            placeholder='Search Here'
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          <Button type='submit'>Search</Button>
+      <section className='mt-20'>
+        <form onSubmit={handleSubmit} className=''>
+          <div className='flex w-full items-center justify-around'>
+            <Input
+              type='text'
+              placeholder='Search Here'
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className='block w-auto'
+            />
+            <Button className='w-1/2' type='submit'>
+              Search
+            </Button>
+          </div>
         </form>
       </section>
       <section className='mt-10 flex w-full justify-center'>
-        <ul className='grid w-5/6 grid-cols-3 gap-4'>
+        <ul className='grid w-full grid-cols-1 gap-4 md:grid-cols-3'>
           {results.map((books) => {
             const info = books.volumeInfo
             return (
               <li key={books.id}>
-                <Button onClick={() => handleSave(books)}>Add Book</Button>
-                <Card className='h-full'>
+                <Card className='h-full p-2'>
                   <CardHeader>
-                    <CardTitle className='text-2xl'>{info.title}</CardTitle>
-                    <CardContent className='text-lg'>
-                      {info.authors}
-                    </CardContent>
-                    <CardContent className='text-lg'>
-                      {info.publisher}
-                    </CardContent>
-                    <div className='mt-2 flex w-full justify-center'>
+                    <CardAction className='relative top-0 flex w-full justify-end'>
+                      <Button
+                        onClick={() => handleSave(books)}
+                        variant={'secondary'}
+                        className='absolute -right-4 hover:cursor-pointer'
+                      >
+                        <BookmarkPlus />
+                      </Button>
+                    </CardAction>
+                    <CardContent className='flex justify-center'>
                       {info?.imageLinks ? (
                         <Image
                           src={info.imageLinks.smallThumbnail}
@@ -115,7 +125,13 @@ const Home = () => {
                           className='rounded-sm shadow-md shadow-black'
                         />
                       ) : null}
-                    </div>
+                    </CardContent>
+                    <CardTitle className='text-center text-xl'>
+                      {info.title}
+                    </CardTitle>
+                    <CardContent className='text-md text-center'>
+                      {info.authors}
+                    </CardContent>
                   </CardHeader>
                 </Card>
               </li>
