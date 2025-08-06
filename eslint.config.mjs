@@ -25,6 +25,14 @@ const eslintConfig = [
     'plugin:jsx-a11y/recommended',
   ),
   {
+    settings: {
+      'jsx-a11y': {
+        components: {
+          Image: 'img',
+          Link: 'a',
+        },
+      },
+    },
     plugins: {
       'jsx-a11y': eslintPluginJsxA11y,
     },
