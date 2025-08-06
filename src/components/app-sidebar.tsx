@@ -13,7 +13,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarGroupAction,
   SidebarFooter,
 } from '@/components/ui/sidebar'
 
