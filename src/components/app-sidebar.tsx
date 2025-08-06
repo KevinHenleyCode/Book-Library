@@ -1,8 +1,9 @@
-import { Home, BookMarked, ListPlus } from 'lucide-react'
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip'
-import Link from 'next/link'
-import { Button } from './ui/button'
+'use client'
 
+import { useState } from 'react'
+import { useTheme } from 'next-themes'
+import Link from 'next/link'
+import { Home, BookMarked, ListPlus, Moon, Sun } from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -30,6 +31,15 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const [themeBtn, setThemeBtn] = useState(true)
+
+  const { setTheme } = useTheme()
+
+  const themeToggle = (theme: boolean) => {
+    setThemeBtn(!themeBtn)
+    setTheme(theme === true ? 'dark' : 'light')
+  }
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -54,11 +64,23 @@ export function AppSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
-                className='hover:cursor-pointer'
                 tooltip={'Create List'}
+                className='hover:cursor-pointer'
               >
                 <ListPlus />
                 <span>Create List</span>
+              </SidebarMenuButton>
+              <SidebarMenuButton
+                onClick={() => themeToggle(!themeBtn)}
+                variant={'outline'}
+                tooltip={'Theme'}
+                className='hover:cursor-pointer'
+              >
+                {themeBtn ? (
+                  <Moon className='text-chart-4' />
+                ) : (
+                  <Sun className='text-chart-4' />
+                )}
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

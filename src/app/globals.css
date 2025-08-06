@@ -1,7 +1,24 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* 
+  sm	  40rem	   width >= 640px 
+  md	  48rem    width >= 768px 
+  lg	  64rem    width >= 1024px 
+  xl	  80rem    width >= 1280px 
+  2xl	  96rem    width >= 1536px 
+  3xl	  120rem   width >= 1920px
+  4xl	  160rem   width >= 2560px
+  5xl	  240rem   width >= 3840px
+  */
+
+  --breakpoint-3xl: 120rem;
+  --breakpoint-4xl: 160rem;
+  --breakpoint-5xl: 240rem;
+}
 
 @theme inline {
   --color-background: var(--background);

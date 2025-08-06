@@ -1,4 +1,5 @@
 'use client'
+
 import { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -10,8 +11,6 @@ import {
   CardContent,
   CardAction,
 } from '@/components/ui/card'
-import { useTheme } from 'next-themes'
-import { BsFillMoonStarsFill, BsSunFill } from 'react-icons/bs'
 import { saveBook } from '@/lib/libraryServices'
 import type { Book } from '@/lib/db'
 import { BookmarkPlus } from 'lucide-react'
@@ -30,9 +29,6 @@ const Home = () => {
   }
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<GoogleBook[]>([])
-  const [themeBtn, setThemeBtn] = useState(true)
-
-  const { setTheme } = useTheme()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -52,11 +48,6 @@ const Home = () => {
     }
   }
 
-  const themeToggle = (theme: boolean) => {
-    setThemeBtn(!themeBtn)
-    setTheme(theme === true ? 'dark' : 'light')
-  }
-
   const handleSave = (bookChoice: GoogleBook) => {
     const book: Book = {
       id: bookChoice.id,
@@ -71,35 +62,27 @@ const Home = () => {
 
   return (
     <div className='flex w-full flex-col items-center justify-center px-4 pt-10'>
-      <span className='flex w-full justify-center px-20'>
-        <Button
-          onClick={() => themeToggle(!themeBtn)}
-          className='hover:cursor-pointer'
-        >
-          {themeBtn ? <BsSunFill /> : <BsFillMoonStarsFill />}
-        </Button>
-      </span>
       <h1 className='mt-10 text-4xl font-bold uppercase italic text-shadow-lg'>
         The Library App
       </h1>
       <section className='mt-20'>
-        <form onSubmit={handleSubmit} className=''>
-          <div className='flex w-full items-center justify-around'>
+        <form onSubmit={handleSubmit}>
+          <div className='flex w-full items-center justify-around gap-2'>
             <Input
               type='text'
               placeholder='Search Here'
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className='block w-auto'
+              className='w-52 sm:w-72'
             />
-            <Button className='w-1/2' type='submit'>
+            <Button className='w-1/4' type='submit'>
               Search
             </Button>
           </div>
         </form>
       </section>
       <section className='mt-10 flex w-full justify-center'>
-        <ul className='grid w-full grid-cols-1 gap-4 md:grid-cols-3'>
+        <ul className='3xl:grid-cols-5 4xl:grid-cols-7 5xl:grid-cols-9 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
           {results.map((books) => {
             const info = books.volumeInfo
             return (

@@ -22,7 +22,7 @@ const Library = () => {
   }, [])
   return (
     <section className='mt-10 flex w-full justify-center px-4'>
-      <ul className='grid w-full grid-cols-1 gap-4 md:grid-cols-3'>
+      <ul className='3xl:grid-cols-5 4xl:grid-cols-7 5xl:grid-cols-9 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
         {books.map((book) => {
           return (
             <li key={book.id}>
