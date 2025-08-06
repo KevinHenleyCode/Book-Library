@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "devDocker": "docker compose -f docker-compose.dev.yml up --build"
+    "devDocker": "docker compose -f docker-compose.dev.yml up --build",
+    "check": "pnpm lint && cross-env NODE_ENV=production pnpm build"
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^1.1.7",
@@ -40,6 +41,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.3",
     "eslint-plugin-jsdoc": "^52.0.4",

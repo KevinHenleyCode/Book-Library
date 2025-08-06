@@ -3,6 +3,9 @@
 import * as React from 'react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 
+/**
+ * Controls themes such as Dark and Light
+ */
 export function ThemeProvider({
   children,
   ...props

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+/** Sends request to Google Books API */
 export async function POST(req: NextRequest) {
   const { query } = await req.json()
   const apiKey = process.env.GOOGLE_BOOKS_API_KEY

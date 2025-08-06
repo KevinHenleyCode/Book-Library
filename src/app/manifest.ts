@@ -1,5 +1,8 @@
 import type { MetadataRoute } from 'next'
 
+/**
+ * Provides the metadata for PWA
+ */
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Book Library',

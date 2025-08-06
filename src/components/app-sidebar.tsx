@@ -29,6 +29,9 @@ const items = [
   },
 ]
 
+/**
+ * The component housing navigation and commonly used items
+ */
 export function AppSidebar() {
   const [themeBtn, setThemeBtn] = useState(true)
 

@@ -32,6 +32,9 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
 }
 
+/**
+ * The main layout function that holds all child elements
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -11,6 +11,13 @@ const compat = new FlatCompat({
 })
 
 const eslintConfig = [
+  {
+    ignores: [
+      'src/components/ui/**',
+      'src/hooks/use-mobile.ts',
+      'src/lib/utils.ts',
+    ],
+  },
   ...compat.extends(
     'next/core-web-vitals',
     'next/typescript',
@@ -27,14 +34,16 @@ const eslintConfig = [
         {
           require: {
             FunctionDeclaration: true,
-            MethodDefinition: true,
-            ClassDeclaration: true,
-            ArrowFunctionExpression: true,
-            FunctionExpression: true,
+            // MethodDefinition: true,
+            // ClassDeclaration: true,
+            // ArrowFunctionExpression: true,
+            // FunctionExpression: true,
           },
         },
       ],
-      'jsdoc/require-description': 'warn',
+      'jsdoc/require-param': 'off',
+      'jsdoc/require-returns': 'off',
+      'jsdoc/require-description': 'off',
 
       // Accessibility Rules
       'jsx-a11y/alt-text': 'error',

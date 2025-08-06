@@ -6,6 +6,9 @@ import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Button } from '@/components/ui/button'
 import { CornerDownLeft } from 'lucide-react'
 
+/**
+ * Default page when route doesn't exist
+ */
 export default function NotFound() {
   return (
     <section className='mt-20 flex flex-col items-center justify-center px-4'>
