@@ -10,7 +10,7 @@ export default function NotFound() {
   return (
     <section className='mt-20 flex flex-col items-center justify-center px-4'>
       <h1 className='font text-4xl font-semibold'>
-        Looks like that page doesn't exist.
+        Looks like that page {`doesn't`} exist.
       </h1>
       <Link href={'/'} className='my-10'>
         <Button variant={'secondary'} className='hover:cursor-pointer'>
