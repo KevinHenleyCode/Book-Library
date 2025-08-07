@@ -12,30 +12,21 @@ import {
   CardAction,
 } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { saveBook } from '@/lib/libraryServices'
-import type { Book } from '@/lib/db'
+import { saveToMyLibrary } from '@/lib/libraryServices'
 import { BookmarkPlus } from 'lucide-react'
+import type { GoogleBook, MyBook } from '@/types/book'
 
-const Home = () => {
-  type GoogleBook = {
-    id: string
-    volumeInfo: {
-      title: string
-      authors?: string[]
-      publisher?: string
-      imageLinks: {
-        smallThumbnail: string
-      }
-    }
-  }
+const HomePage = () => {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<GoogleBook[]>([])
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearchGoogleBooks = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault()
 
     try {
-      const res = await fetch('/api/search-books', {
+      const res = await fetch('/api/search-google-books', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),
@@ -49,17 +40,25 @@ const Home = () => {
     }
   }
 
-  const handleSave = (bookChoice: GoogleBook) => {
-    const book: Book = {
-      id: bookChoice.id,
-      title: bookChoice.volumeInfo.title,
-      authors: bookChoice.volumeInfo.authors || [],
-      publisher: bookChoice.volumeInfo.publisher,
-      thumbnail: bookChoice.volumeInfo.imageLinks?.smallThumbnail,
-      createdAt: Date.now(),
+  const handleSaveToMyLibrary = async (googleBook: GoogleBook) => {
+    try {
+      const myBook: MyBook = {
+        id: googleBook.id,
+        title: googleBook.volumeInfo.title,
+        authors: googleBook.volumeInfo.authors || [],
+        publisher: googleBook.volumeInfo.publisher,
+        thumbnail: googleBook.volumeInfo.imageLinks?.smallThumbnail,
+        createdAt: Date.now(),
+      }
+      const { success, message } = await saveToMyLibrary(myBook)
+      if (success) {
+        toast(message)
+      } else {
+        console.error(message)
+      }
+    } catch (err) {
+      console.error(err)
     }
-    saveBook(book)
-    toast(`Added ${bookChoice.volumeInfo.title} to library!`)
   }
 
   return (
@@ -68,7 +67,7 @@ const Home = () => {
         The Library App
       </h1>
       <section className='mt-20'>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSearchGoogleBooks}>
           <div className='flex w-full items-center justify-around gap-2'>
             <Input
               type='text'
@@ -85,15 +84,15 @@ const Home = () => {
       </section>
       <section className='mt-10 flex w-full justify-center'>
         <ul className='3xl:grid-cols-5 4xl:grid-cols-7 5xl:grid-cols-9 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
-          {results.map((books) => {
-            const info = books.volumeInfo
+          {results.map((book) => {
+            const info = book.volumeInfo
             return (
-              <li key={books.id}>
+              <li key={book.id}>
                 <Card className='h-full p-2'>
                   <CardHeader>
                     <CardAction className='relative top-0 flex w-full justify-end'>
                       <Button
-                        onClick={() => handleSave(books)}
+                        onClick={() => handleSaveToMyLibrary(book)}
                         variant={'secondary'}
                         className='hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer'
                       >
@@ -128,4 +127,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default HomePage

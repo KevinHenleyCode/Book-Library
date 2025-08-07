@@ -1,23 +1,15 @@
 import Dexie, { Table } from 'dexie'
+import type { MyBook } from '@/types/book'
 
-export interface Book {
-  id: string // Google Books ID
-  title: string
-  authors: string[]
-  thumbnail?: string
-  publisher?: string
-  createdAt: number
-}
-
-class MyLibraryDB extends Dexie {
-  books!: Table<Book>
+class TheLibraryDB extends Dexie {
+  myLibrary!: Table<MyBook>
 
   constructor() {
-    super('myLibrary')
+    super('theLibrary')
     this.version(1).stores({
-      books: 'id, title, createdAt',
+      myLibrary: 'id, title, createdAt',
     })
   }
 }
 
-export const db = new MyLibraryDB()
+export const db = new TheLibraryDB()

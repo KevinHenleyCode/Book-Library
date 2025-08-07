@@ -11,29 +11,37 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import Image from 'next/image'
-import { getAllBooks } from '@/lib/libraryServices'
-import type { Book } from '@/lib/db'
+import { getAllFromMyLibrary, deleteFromMyLibrary } from '@/lib/libraryServices'
 import { Trash2 } from 'lucide-react'
-import { deleteBook } from '@/lib/libraryServices'
+import type { MyBook } from '@/types/book'
 
-const Library = () => {
-  const [books, setBooks] = useState<Book[]>([])
+const LibraryPage = () => {
+  const [books, setBooks] = useState<MyBook[]>([])
 
-  const handleDelete = async (id: string, title: string) => {
-    const res = await deleteBook(id)
-    const result = res
+  const handleDeleteFromMyLibrary = async (id: string, title: string) => {
+    const { success, message } = await deleteFromMyLibrary(id, title)
 
-    if (result.success) {
-      const getCurrentBooks = await getAllBooks()
-      setBooks(getCurrentBooks)
-      toast(`Deleted ${title} from library.`)
+    if (success) {
+      handleGetAllFromMyLibrary()
+      toast(message)
     } else {
-      console.error(`There was an error deleting ${title}`)
+      console.error(message)
+      setBooks([])
+    }
+  }
+
+  const handleGetAllFromMyLibrary = async () => {
+    const { success, data } = await getAllFromMyLibrary()
+
+    if (success) {
+      setBooks(data ?? [])
+    } else {
+      setBooks([])
     }
   }
 
   useEffect(() => {
-    getAllBooks().then(setBooks)
+    handleGetAllFromMyLibrary()
   }, [])
   return (
     <section className='mt-10 flex w-full justify-center px-4'>
@@ -45,7 +53,9 @@ const Library = () => {
                 <CardHeader>
                   <CardAction className='relative top-0 flex w-full justify-end'>
                     <Button
-                      onClick={() => handleDelete(book.id, book.title)}
+                      onClick={() =>
+                        handleDeleteFromMyLibrary(book.id, book.title)
+                      }
                       variant={'secondary'}
                       className='hover:text-destructive absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer'
                     >
@@ -79,4 +89,4 @@ const Library = () => {
   )
 }
 
-export default Library
+export default LibraryPage
