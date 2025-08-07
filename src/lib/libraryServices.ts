@@ -15,12 +15,12 @@ export async function saveBook(book: Book) {
 /**
  * Removes book from myLibrary Database
  */
-export async function deleteBook(book: Book) {
+export async function deleteBook(id: string): Promise<{ success: boolean }> {
   try {
-    await db.books.delete(book.id)
-    console.log(`Removed "${book.title}"`)
-  } catch (err) {
-    console.error('Error removing book:', err)
+    await db.books.delete(id)
+    return { success: true }
+  } catch {
+    return { success: false }
   }
 }
 

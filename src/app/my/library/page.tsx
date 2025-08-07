@@ -9,13 +9,28 @@ import {
   CardAction,
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import Image from 'next/image'
 import { getAllBooks } from '@/lib/libraryServices'
 import type { Book } from '@/lib/db'
 import { Trash2 } from 'lucide-react'
+import { deleteBook } from '@/lib/libraryServices'
 
 const Library = () => {
   const [books, setBooks] = useState<Book[]>([])
+
+  const handleDelete = async (id: string, title: string) => {
+    const res = await deleteBook(id)
+    const result = res
+
+    if (result.success) {
+      const getCurrentBooks = await getAllBooks()
+      setBooks(getCurrentBooks)
+      toast(`Deleted ${title} from library.`)
+    } else {
+      console.error(`There was an error deleting ${title}`)
+    }
+  }
 
   useEffect(() => {
     getAllBooks().then(setBooks)
@@ -30,9 +45,9 @@ const Library = () => {
                 <CardHeader>
                   <CardAction className='relative top-0 flex w-full justify-end'>
                     <Button
-                      // onClick={() => handleSave(books)}
+                      onClick={() => handleDelete(book.id, book.title)}
                       variant={'secondary'}
-                      className='absolute -right-4 hover:cursor-pointer'
+                      className='hover:text-destructive absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer'
                     >
                       <Trash2 />
                     </Button>

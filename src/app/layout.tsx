@@ -5,6 +5,7 @@ import RegisterSW from './register-sw'
 import { ThemeProvider } from '@/components/theme-provider'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/app-sidebar'
+import { Toaster } from '@/components/ui/sonner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -58,6 +59,7 @@ export default function RootLayout({
               <SidebarTrigger />
               {children}
             </main>
+            <Toaster />
           </SidebarProvider>
         </ThemeProvider>
       </body>

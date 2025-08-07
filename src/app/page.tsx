@@ -11,6 +11,7 @@ import {
   CardContent,
   CardAction,
 } from '@/components/ui/card'
+import { toast } from 'sonner'
 import { saveBook } from '@/lib/libraryServices'
 import type { Book } from '@/lib/db'
 import { BookmarkPlus } from 'lucide-react'
@@ -58,6 +59,7 @@ const Home = () => {
       createdAt: Date.now(),
     }
     saveBook(book)
+    toast(`Added ${bookChoice.volumeInfo.title} to library!`)
   }
 
   return (
@@ -93,7 +95,7 @@ const Home = () => {
                       <Button
                         onClick={() => handleSave(books)}
                         variant={'secondary'}
-                        className='absolute -right-4 hover:cursor-pointer'
+                        className='hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer'
                       >
                         <BookmarkPlus />
                       </Button>
