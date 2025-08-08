@@ -10,6 +10,8 @@ export type GoogleBook = {
   }
 }
 
+export type GoogleBookList = GoogleBook[]
+
 export interface MyBook {
   id: string // Google Books ID
   title: string
@@ -18,3 +20,5 @@ export interface MyBook {
   publisher?: string
   createdAt: number
 }
+
+export type MyBookList = MyBook[]
