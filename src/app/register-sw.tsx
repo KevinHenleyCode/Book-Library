@@ -5,9 +5,9 @@ const RegisterSW = () => {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
-        .register('/sw.js')
-        .then(() => console.log('SW registered'))
-        .catch(console.error)
+        .register('/sw.js', { scope: '/' })
+        .then((reg) => console.log(`SW registered ${reg.scope}`))
+        .catch((err) => console.error(`[SW] register failed ${err}`))
     }
   }, [])
 
