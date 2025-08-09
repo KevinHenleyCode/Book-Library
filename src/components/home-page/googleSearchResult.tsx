@@ -41,7 +41,7 @@ const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
   return (
     <section className='mt-10 flex w-full justify-center'>
       <ul className='3xl:grid-cols-5 4xl:grid-cols-7 5xl:grid-cols-9 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
-        {results.map((book) => {
+        {results?.map((book) => {
           const info = book.volumeInfo
           return (
             <li key={book.id}>

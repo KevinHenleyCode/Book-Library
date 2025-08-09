@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Book Library',
+  title: { template: '%s | Book Library', default: 'Book Library' },
   description: 'Keep track of your book collection',
   icons: [
     { rel: 'icon', url: '/favicon.svg' },
