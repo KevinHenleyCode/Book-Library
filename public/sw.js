@@ -1,5 +1,4 @@
-const CACHE_NAME = 'book-library-v4'
-
+const CACHE_NAME = 'book-library-v5'
 const PRECACHE_URLS = [
   '/',
   '/my/library',
@@ -16,11 +15,12 @@ self.addEventListener('install', (event) => {
       try {
         const res = await fetch(new Request(url, { cache: 'reload' }))
         if (!res.ok) throw new Error(`Status ${res.status}`)
-        await cache.put(
-          new URL(url, self.location.origin).toString(),
-          res.clone(),
-        )
-      } catch (err) {}
+        const absolute = new URL(url, self.location.origin).toString()
+        await cache.put(absolute, res.clone())
+        if (url === '/') {
+          await cache.put(self.location.origin + '/', res.clone())
+        }
+      } catch {}
     }
   })()
 
@@ -32,11 +32,10 @@ self.addEventListener('activate', (event) => {
   const cleanup = (async () => {
     const keys = await caches.keys()
     await Promise.all(
-      keys.map((key) =>
-        key !== CACHE_NAME ? caches.delete(key) : Promise.resolve(),
+      keys.map((k) =>
+        k !== CACHE_NAME ? caches.delete(k) : Promise.resolve(),
       ),
     )
-
     if ('navigationPreload' in self.registration) {
       try {
         await self.registration.navigationPreload.enable()
@@ -56,16 +55,11 @@ function isSameOrigin(url) {
   }
 }
 
-function normalized(url) {
-  return new URL(url, self.location.origin).toString()
-}
-
 self.addEventListener('fetch', (event) => {
   const { request } = event
-
   if (request.method !== 'GET') return
 
-  // 1: Navigations - network-first, then offline fallbacks
+  // Navigations: network-first, offline fallback
   if (request.mode === 'navigate') {
     event.respondWith(
       (async () => {
@@ -73,18 +67,17 @@ self.addEventListener('fetch', (event) => {
           const preload =
             'preloadResponse' in event ? await event.preloadResponse : null
           if (preload) return preload
-          const online = await fetch(request)
-          return online
+          return await fetch(request)
         } catch {
           const cache = await caches.open(CACHE_NAME)
-          // Try specific page, then app shell, then offline page
-          const fromCache =
-            (await cache.match(normalized('/my/library'))) ||
-            (await cache.match(normalized('/'))) ||
-            (await cache.match(normalized('/offline.html')))
-          return (
-            fromCache ||
-            new Response('Offline', { status: 503, statusText: 'Offline' })
+          const exact = await cache.match(request, { ignoreSearch: true })
+          if (exact) return exact
+          const root = await cache.match(
+            new URL('/', self.location.origin).toString(),
+          )
+          if (root) return root
+          return await cache.match(
+            new URL('/offline.html', self.location.origin).toString(),
           )
         }
       })(),
@@ -92,7 +85,7 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // 2: Static assets (cache-first) - Next.js build files and common static types
+  // Static assets: cache-first
   const url = new URL(request.url)
   const isNextStatic =
     isSameOrigin(request.url) && url.pathname.startsWith('/_next/static/')
@@ -112,16 +105,16 @@ self.addEventListener('fetch', (event) => {
           if (res && res.ok) await cache.put(request, res.clone())
           return res
         } catch {
-          // Last resort, try offline shell for CSS/JS requests to avoid blank screen
-          const fallback = await cache.match(normalized('/offline.html'))
-          return fallback || new Response('', { status: 504 })
+          return await cache.match(
+            new URL('/offline.html', self.location.origin).toString(),
+          )
         }
       })(),
     )
     return
   }
 
-  // 3: Everything else (API/etc.) - network-first with cache fallback for same-origin
+  // Same-origin runtime: network-first with cache fallback
   if (isSameOrigin(request.url)) {
     event.respondWith(
       (async () => {
@@ -131,8 +124,7 @@ self.addEventListener('fetch', (event) => {
           if (res && res.ok) await cache.put(request, res.clone())
           return res
         } catch {
-          const fallback = await cache.match(request)
-          return fallback || new Response('Offline', { status: 503 })
+          return await cache.match(request, { ignoreSearch: true })
         }
       })(),
     )
