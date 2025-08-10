@@ -43,7 +43,7 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar>
+    <Sidebar collapsible='icon'>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
@@ -76,12 +76,18 @@ export function AppSidebar() {
                 onClick={() => themeToggle(!themeBtn)}
                 variant={'outline'}
                 tooltip={'Theme'}
-                className='hover:cursor-pointer'
+                className='w-fit hover:cursor-pointer'
               >
                 {themeBtn ? (
-                  <Moon className='text-chart-4' />
+                  <>
+                    <Moon className='text-chart-4' />
+                    <span>Theme</span>
+                  </>
                 ) : (
-                  <Sun className='text-chart-4' />
+                  <>
+                    <Sun className='text-chart-4' />
+                    <span>Theme</span>
+                  </>
                 )}
               </SidebarMenuButton>
             </SidebarMenuItem>
