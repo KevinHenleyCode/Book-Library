@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   const userInputCleaned = encodeURIComponent(userInput)
   const downloadableCleaned = downloadable ? '&download=epub' : ''
   const digitalTypeCleaned =
-    digitalType === '' ? '' : `&filter=${encodeURIComponent(digitalType)}`
+    digitalType === 'null' ? '' : `&filter=${encodeURIComponent(digitalType)}`
   const pageStartIndexCleaned = `&startIndex=${encodeURIComponent(pageStartIndex)}`
   const pageMaxResultsCleaned = `&maxResults=${encodeURIComponent(pageMaxResults)}`
   const printTypeCleaned = `&printType=${encodeURIComponent(printType)}`
