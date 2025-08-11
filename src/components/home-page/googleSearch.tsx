@@ -8,6 +8,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectGroup,
+  SelectLabel,
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
@@ -100,8 +102,8 @@ const GoogleSearch = () => {
   }, [filters.pageStartIndex, fetchBooks])
 
   return (
-    <div className='w-full'>
-      <section className='mt-20'>
+    <div className='my-10 w-full'>
+      <section className='mt-10'>
         <form onSubmit={handleSearchGoogleBooks}>
           <div className='grid w-full gap-2 lg:justify-center'>
             <span className='grid grid-cols-4 gap-4'>
@@ -124,7 +126,7 @@ const GoogleSearch = () => {
                   }))
                 }
               >
-                <SelectTrigger className='col-span-4 w-full md:col-span-2 lg:col-span-1'>
+                <SelectTrigger className='col-span-4 w-full hover:cursor-pointer md:col-span-2 lg:col-span-1'>
                   <SelectValue
                     placeholder={cleanStandardParameter(
                       filters.standardParameters,
@@ -132,13 +134,16 @@ const GoogleSearch = () => {
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='inauthor'>Author</SelectItem>
-                  <SelectItem value='intitle'>Title</SelectItem>
-                  <SelectItem value='inpublisher'>Publisher</SelectItem>
-                  <SelectItem value='subject'>Subject</SelectItem>
-                  <SelectItem value='isbn'>ISBN</SelectItem>
-                  <SelectItem value='lccn'>LCCN</SelectItem>
-                  <SelectItem value='oclc'>OCLC</SelectItem>
+                  <SelectGroup>
+                    <SelectLabel>Search Type</SelectLabel>
+                    <SelectItem value='inauthor'>Author</SelectItem>
+                    <SelectItem value='intitle'>Title</SelectItem>
+                    <SelectItem value='inpublisher'>Publisher</SelectItem>
+                    <SelectItem value='subject'>Subject</SelectItem>
+                    <SelectItem value='isbn'>ISBN</SelectItem>
+                    <SelectItem value='lccn'>LCCN</SelectItem>
+                    <SelectItem value='oclc'>OCLC</SelectItem>
+                  </SelectGroup>
                 </SelectContent>
               </Select>
               <span className='col-span-4 flex justify-center lg:col-span-1'>
@@ -149,7 +154,7 @@ const GoogleSearch = () => {
                       pageStartIndex: 0,
                     }))
                   }
-                  className='w-1/2 lg:w-full'
+                  className='w-1/2 hover:cursor-pointer lg:w-full'
                   type='submit'
                 >
                   Search
@@ -159,7 +164,7 @@ const GoogleSearch = () => {
             <Collapsible className='mt-4'>
               <CollapsibleTrigger
                 asChild
-                className='flex w-full justify-center'
+                className='flex w-full justify-center hover:cursor-pointer'
               >
                 <Button
                   variant={'secondary'}
@@ -181,18 +186,21 @@ const GoogleSearch = () => {
                       }))
                     }
                   >
-                    <SelectTrigger className='w-full'>
+                    <SelectTrigger className='w-full hover:cursor-pointer'>
                       <SelectValue
                         placeholder={`Digital Formats: ${filters.digitalType}`}
                       />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='null'>All</SelectItem>
-                      <SelectItem value='partial'>Partial</SelectItem>
-                      <SelectItem value='full'>Full</SelectItem>
-                      <SelectItem value='free-ebooks'>Free Ebooks</SelectItem>
-                      <SelectItem value='paid-ebooks'>Paid Ebook</SelectItem>
-                      <SelectItem value='ebooks'>Ebooks</SelectItem>
+                      <SelectGroup>
+                        <SelectLabel>Digital Type</SelectLabel>
+                        <SelectItem value='null'>All</SelectItem>
+                        <SelectItem value='partial'>Partial</SelectItem>
+                        <SelectItem value='full'>Full</SelectItem>
+                        <SelectItem value='free-ebooks'>Free Ebooks</SelectItem>
+                        <SelectItem value='paid-ebooks'>Paid Ebook</SelectItem>
+                        <SelectItem value='ebooks'>Ebooks</SelectItem>
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
                 </CollapsibleContent>
@@ -206,13 +214,16 @@ const GoogleSearch = () => {
                       }))
                     }
                   >
-                    <SelectTrigger className='w-full'>
+                    <SelectTrigger className='w-full hover:cursor-pointer'>
                       <SelectValue placeholder={filters.printType} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value='all'>All</SelectItem>
-                      <SelectItem value='books'>Books</SelectItem>
-                      <SelectItem value='magazines'>Magazines</SelectItem>
+                      <SelectGroup>
+                        <SelectLabel>Print Type</SelectLabel>
+                        <SelectItem value='all'>All</SelectItem>
+                        <SelectItem value='books'>Books</SelectItem>
+                        <SelectItem value='magazines'>Magazines</SelectItem>
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
                 </CollapsibleContent>
@@ -223,6 +234,7 @@ const GoogleSearch = () => {
                       onCheckedChange={(c: boolean) =>
                         setFilters((prev) => ({ ...prev, downloadable: c }))
                       }
+                      className='hover:cursor-pointer'
                     />
                     <p>Downloadable</p>
                   </Label>
@@ -244,12 +256,15 @@ const GoogleSearch = () => {
               }))
             }
           >
-            <SelectTrigger className='w-fit'>
+            <SelectTrigger className='w-fit hover:cursor-pointer'>
               <SelectValue placeholder={filters.orderBy} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='relevance'>Relevance</SelectItem>
-              <SelectItem value='newest'>Newest</SelectItem>
+              <SelectGroup>
+                <SelectLabel>OrderBy: </SelectLabel>
+                <SelectItem value='relevance'>Relevance</SelectItem>
+                <SelectItem value='newest'>Newest</SelectItem>
+              </SelectGroup>
             </SelectContent>
           </Select>
           <Select
@@ -262,14 +277,17 @@ const GoogleSearch = () => {
               }))
             }
           >
-            <SelectTrigger className='w-fit'>
+            <SelectTrigger className='w-fit hover:cursor-pointer'>
               <SelectValue placeholder={filters.pageMaxResults} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='10'>10</SelectItem>
-              <SelectItem value='20'>20</SelectItem>
-              <SelectItem value='30'>30</SelectItem>
-              <SelectItem value='40'>40</SelectItem>
+              <SelectGroup>
+                <SelectLabel>Per Page</SelectLabel>
+                <SelectItem value='10'>10</SelectItem>
+                <SelectItem value='20'>20</SelectItem>
+                <SelectItem value='30'>30</SelectItem>
+                <SelectItem value='40'>40</SelectItem>
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
@@ -277,7 +295,7 @@ const GoogleSearch = () => {
       <GoogleSearchResult results={results} />
       <Separator className='my-4' />
       <section>
-        <div className='relative mt-10'>
+        <div className='relative my-10'>
           <Pagination className='absolute bottom-0'>
             <PaginationContent>
               <PaginationItem>

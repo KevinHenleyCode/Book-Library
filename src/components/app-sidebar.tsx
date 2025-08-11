@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
-import { Home, BookMarked, ListPlus, Moon, Sun } from 'lucide-react'
+import { Home, BookMarked, ArrowLeftFromLine, Moon, Sun } from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -65,13 +65,13 @@ export function AppSidebar() {
         <SidebarFooter className='absolute bottom-4 w-full'>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton
+              {/* <SidebarMenuButton
                 tooltip={'Create List'}
                 className='hover:cursor-pointer'
               >
                 <ListPlus />
                 <span>Create List</span>
-              </SidebarMenuButton>
+              </SidebarMenuButton> */}
               <SidebarMenuButton
                 onClick={() => themeToggle(!themeBtn)}
                 variant={'outline'}
@@ -79,17 +79,21 @@ export function AppSidebar() {
                 className='w-fit hover:cursor-pointer'
               >
                 {themeBtn ? (
-                  <>
-                    <Moon className='text-chart-4' />
-                    <span>Theme</span>
-                  </>
+                  <Moon className='text-chart-4' />
                 ) : (
-                  <>
-                    <Sun className='text-chart-4' />
-                    <span>Theme</span>
-                  </>
+                  <Sun className='text-chart-4' />
                 )}
+                <span>Theme</span>
               </SidebarMenuButton>
+              <Link href={'https://kevinhenleycode.com/'}>
+                <SidebarMenuButton
+                  tooltip={'Portfolio Site'}
+                  className='hover:cursor-pointer'
+                >
+                  <ArrowLeftFromLine />
+                  <span>Portfolio Site</span>
+                </SidebarMenuButton>
+              </Link>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>

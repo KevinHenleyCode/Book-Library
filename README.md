@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Book‑Library
+
+**Book‑Library** is a custom book library application built with Next.js that connects to the Google Books API, allowing users to search and explore book information in a sleek, modern web interface. It’s written in TypeScript and styled with Tailwind CSS, plus Shadcn/ui components. It also includes Docker support for seamless development and deployment.
+
+## Features
+
+- Search for books using Google Books API
+- Fetch book details such as title, authors, and thumbnail
+- Fast, dynamic UI powered by Next.js, Tailwind CSS and shadcn/ui
+- Developer-friendly with TypeScript safety and linting setup
+- Dockerized for easy local setup and cloud deployment
+
+## Tech Stack
+
+- **Framework**: Next.js 15
+- **Languages**: TypeScript, JavaScript, CSS
+- **Styling**: Tailwind CSS
+- **Database**: SQLite + Prisma (planned integration)
+- **Offline Storage**: IndexedDB (PWA via WASM)
+- **API**: Google Books API
+- **Containerization**: Docker (`Dockerfile`, `docker-compose.dev.yml`)
+- **Deployment**: AWS EC2 (via Docker)
+- **CI/CD**: GitHub Actions
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js
+- pnpm
+- Docker (optional, for containerized workflows)
+
+### Running Locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Clone the repository
+git clone https://github.com/KevinHenleyCode/Book-Library.git
+cd Book-Library
+
+# Install dependencies
+pnpm install
+
+# Start the development server
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Using Docker
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Build and run the container
+docker build -t book-library .
+docker run -p 3000:3000 book-library
 
-## Learn More
+# Or use docker-compose for development
+docker-compose -f docker-compose.dev.yml up --build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Deployment is configured for AWS EC2 using Docker and GitHub Actions. Update environment variables in your EC2 instance and rebuild containers for changes to take effect.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment Variables
 
-## Deploy on Vercel
+Create an `.env` file:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+GOOGLE_BOOKS_API_KEY=your_api_key_here
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+```
+├── .github/           # CI/CD workflows
+├── public/            # Static assets
+├── src/app/           # Next.js app directory
+├── src/components/    # UI components
+├── Dockerfile
+├── docker-compose.dev.yml
+├── next.config.ts
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+## Current Status
+
+- This app is in early development and still has a significant amount of work to be done. If you encounter any errors, please feel free to reach out to me.
+
+## Future Plans
+
+- Custom lists to organize your library
+- Search and filters for the My Library section
+- Click on a book for more detailed information
+- Edit bar for modifying book information in your library
+- User logins to sync data across devices
+- Saved custom queries for faster access to frequent searches
+- Expanded selection of themes
+- Social features such as comments, discussions, and book clubs
+
+## License
+
+This project is licensed under the MIT License.
