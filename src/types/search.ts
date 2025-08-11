@@ -13,7 +13,7 @@ export type DigitalType =
   | 'free-ebooks'
   | 'paid-ebooks'
   | 'ebooks'
-export type PageMaxResults = '10' | '20' | '30' | '40'
+export type PageMaxResults = 10 | 20 | 30 | 40
 export type PrintType = 'all' | 'books' | 'magazines'
 export type OrderBy = 'relevance' | 'newest'
 

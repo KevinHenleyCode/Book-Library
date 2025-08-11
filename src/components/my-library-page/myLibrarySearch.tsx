@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import MyLibrarySearchResult from './myLibrarySearchResult'
 import { getAllFromMyLibrary } from '@/lib/libraryServices'
 import type { MyBookList } from '@/types/book'
+import { Separator } from '@/components/ui/separator'
 
 const MyLibrarySearch = () => {
   const [books, setBooks] = useState<MyBookList>([])
@@ -25,6 +26,7 @@ const MyLibrarySearch = () => {
   return (
     <div className='w-full'>
       <section></section>
+      <Separator className='mt-10' />
       <MyLibrarySearchResult
         books={books}
         handleGetAllFromMyLibrary={handleGetAllFromMyLibrary}
