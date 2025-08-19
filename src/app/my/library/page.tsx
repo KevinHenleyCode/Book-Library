@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import MyLibrarySearch from '@/components/my-library-page/myLibrarySearch'
+import MyLibrarySearch from '@/components/my-library-page/my-library-search'
 
 export const metadata: Metadata = {
   title: 'My Books',

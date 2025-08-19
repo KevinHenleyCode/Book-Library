@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import MyLibrarySearchResult from './myLibrarySearchResult'
+import MyLibrarySearchResult from './my-library-search-result'
 import { getAllFromMyLibrary } from '@/lib/libraryServices'
 import type { MyBookList } from '@/types/book'
 import { Separator } from '@/components/ui/separator'

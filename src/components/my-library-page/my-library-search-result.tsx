@@ -61,9 +61,13 @@ const MyLibrarySearchResult = ({
                       </Button>
                     </CardAction>
                     <CardContent className='flex justify-center'>
-                      {book?.thumbnail ? (
+                      {book?.imageLinksThumbnail ||
+                      book?.imageLinksSmallThumbnail ? (
                         <Image
-                          src={book.thumbnail}
+                          src={
+                            book.imageLinksThumbnail ||
+                            book.imageLinksSmallThumbnail
+                          }
                           alt={book.title}
                           width={100}
                           height={100}

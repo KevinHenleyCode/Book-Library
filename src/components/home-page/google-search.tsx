@@ -36,7 +36,7 @@ import type {
   PrintType,
   OrderBy,
 } from '@/types/search'
-import GoogleSearchResult from './googleSearchResult'
+import GoogleSearchResult from './google-search-result'
 import { ChevronsUpDown } from 'lucide-react'
 
 const GoogleSearch = () => {

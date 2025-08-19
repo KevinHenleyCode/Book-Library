@@ -10,7 +10,8 @@ import {
 import { toast } from 'sonner'
 import { saveToMyLibrary } from '@/lib/libraryServices'
 import { BookmarkPlus } from 'lucide-react'
-import type { MyBook, GoogleBookList, GoogleBook } from '@/types/book'
+import type { GoogleBookList, GoogleBook } from '@/types/book'
+import { mapGoogleBookToMyBook } from '@/mappers/googleBooks'
 
 interface GoogleSearchResultProps {
   results: GoogleBookList
@@ -19,14 +20,7 @@ interface GoogleSearchResultProps {
 const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
   const handleSaveToMyLibrary = async (googleBook: GoogleBook) => {
     try {
-      const myBook: MyBook = {
-        id: googleBook.id,
-        title: googleBook.volumeInfo.title,
-        authors: googleBook.volumeInfo.authors || [],
-        publisher: googleBook.volumeInfo.publisher,
-        thumbnail: googleBook.volumeInfo.imageLinks?.smallThumbnail,
-        createdAt: Date.now(),
-      }
+      const myBook = mapGoogleBookToMyBook(googleBook)
       const { success, message } = await saveToMyLibrary(myBook)
       if (success) {
         toast.success(message)

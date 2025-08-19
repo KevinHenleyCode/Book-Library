@@ -1,4 +1,4 @@
-import GoogleSearch from '@/components/home-page/googleSearch'
+import GoogleSearch from '@/components/home-page/google-search'
 
 const HomePage = () => {
   return (
