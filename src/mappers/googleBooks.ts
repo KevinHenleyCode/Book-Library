@@ -66,10 +66,11 @@ export function mapGoogleBookToMyBook(g: GoogleBook): MyBook {
     searchInfoTextSnippet: se?.textSnippet ?? 'UNKNOWN',
 
     // List info
-    lists: ['default'],
+    lists: ['default', 'test'],
 
     // Created At info
     createdAt: Date.now(),
-    editedAt: Date.now(),
+    updatedAt: Date.now(),
+    deletedAt: null,
   } as const
 }

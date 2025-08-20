@@ -126,7 +126,8 @@ export interface MyBook {
   searchInfoTextSnippet?: string
   lists: string[]
   createdAt: number
-  editedAt: number
+  updatedAt: number
+  deletedAt: number | null
 }
 
 export type MyBookList = MyBook[]

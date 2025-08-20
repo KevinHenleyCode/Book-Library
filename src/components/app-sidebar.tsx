@@ -78,7 +78,7 @@ export function AppSidebar() {
                 tooltip={'Theme'}
                 className='w-fit hover:cursor-pointer'
               >
-                {themeBtn ? (
+                {themeBtn === true ? (
                   <Moon className='text-chart-4' />
                 ) : (
                   <Sun className='text-chart-4' />
