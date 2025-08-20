@@ -1,10 +1,27 @@
 import { db } from '@/lib/db'
 import type { MyBook } from '@/types/book'
+import type { ServiceReturn } from '@/types/return'
 
-type ServiceReturn<T = unknown[]> = {
-  success: boolean
-  message: string
-  data?: T
+/**
+ * Retrieves all books of a given parameter from Google Books API
+ */
+export async function getAllFromMyLibrary(): Promise<ServiceReturn<MyBook[]>> {
+  try {
+    const allMyBooks = await db.myLibrary
+      .orderBy('createdAt')
+      .reverse()
+      .toArray()
+    return {
+      success: true,
+      message: 'Retrieved all books!',
+      data: allMyBooks,
+    }
+  } catch (err) {
+    return {
+      success: false,
+      message: `There was an error fetching your books: ${err}`,
+    }
+  }
 }
 
 /**
@@ -36,25 +53,6 @@ export async function deleteFromMyLibrary(
     return {
       success: false,
       message: `There was an error removing your book: ${err}`,
-    }
-  }
-}
-
-/**
- * Retrieves all books of a given parameter from Google Books API
- */
-export async function getAllFromMyLibrary(): Promise<ServiceReturn<MyBook[]>> {
-  const allMyBooks = await db.myLibrary.orderBy('createdAt').reverse().toArray()
-  try {
-    return {
-      success: true,
-      message: 'Retrieved all books!',
-      data: allMyBooks,
-    }
-  } catch (err) {
-    return {
-      success: false,
-      message: `There was an error fetching your books: ${err}`,
     }
   }
 }

@@ -10,7 +10,7 @@ class TheLibraryDB extends Dexie {
     super('theLibrary')
     this.version(1).stores({
       myLibrary: 'id, title, *lists, updatedAt, deletedAt',
-      myLists: 'userId, listNames, updatedAt',
+      myLists: 'userId, *listNames, updatedAt',
     })
   }
 }
