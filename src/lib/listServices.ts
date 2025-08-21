@@ -42,7 +42,7 @@ export async function checkRowExists(userId: string) {
  */
 export async function getAllListNames(): Promise<ServiceReturn<BookList[]>> {
   try {
-    const allListNames = await db.myLists.orderBy('listNames').toArray()
+    const allListNames = await db.myLists.orderBy('userId').toArray()
     return {
       success: true,
       message: 'Lists have been fetched.',
