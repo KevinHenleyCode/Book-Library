@@ -38,7 +38,7 @@ jobs:
       - name: Deploy to EC2 with Docker
         run: |
           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
-            "GOOGLE_BOOKS_API_KEY=${{ secrets.GOOGLE_BOOKS_API_KEY }} bash -s" << 'EOF'
+            "GOOGLE_BOOKS_API_KEY=${{ secrets.GOOGLE_BOOKS_API_KEY }} USER_NAME=${{ secrets.USER_NAME}} bash -s" << 'EOF'
             
             set -e
               
@@ -71,6 +71,7 @@ jobs:
             
             docker run -d --name book-library \
               --env GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY \
+              --env USER_NAME=$USER_NAME \
               -v pnpm-store:/pnpm-store \
               -p 3001:3000 --restart unless-stopped book-library
           EOF

@@ -38,6 +38,7 @@ import type {
 } from '@/types/search'
 import GoogleSearchResult from './google-search-result'
 import { ChevronsUpDown } from 'lucide-react'
+import { checkRowExists } from '@/lib/listServices'
 
 const GoogleSearch = () => {
   const [filters, setFilters] = useState<BookSearch>({
@@ -52,6 +53,14 @@ const GoogleSearch = () => {
     orderBy: 'relevance',
   })
   const [results, setResults] = useState<GoogleBookList>([])
+
+  const getUserName = async () => {
+    const res = await fetch('/api/user-info')
+    const result = await res.json()
+    if (result.success) {
+      checkRowExists(result.userName)
+    }
+  }
 
   const cleanStandardParameter = (word: string): string => {
     const removeFirstTwoLetters = word.replace('in', '')
@@ -98,6 +107,7 @@ const GoogleSearch = () => {
   }
 
   useEffect(() => {
+    getUserName()
     void fetchBooks()
   }, [filters.pageStartIndex, fetchBooks])
 

@@ -2,13 +2,12 @@ import { db } from '@/lib/db'
 import type { BookList } from '@/types/list'
 import type { ServiceReturn } from '@/types/return'
 
-const userId = 'local-user'
 const now = () => Date.now()
 
 /**
  * Makes sure there is always a userId applied to the table
  */
-export async function checkRowExists() {
+export async function checkRowExists(userId: string) {
   try {
     const row = await db.myLists.get(userId)
 
@@ -20,7 +19,7 @@ export async function checkRowExists() {
         updatedAt: now(),
       }
       await db.myLists.put(base)
-      return base
+      return
     }
 
     if (!row.listNames.includes('Default')) {
@@ -30,7 +29,7 @@ export async function checkRowExists() {
         updatedAt: now(),
       }
       await db.myLists.put(updated)
-      return updated
+      return
     }
     return { success: true, message: 'Updated myLists table!', data: row }
   } catch (err) {
@@ -57,19 +56,25 @@ export async function getAllListNames(): Promise<ServiceReturn<BookList[]>> {
 /**
  * Adds a new listName to myLists table
  */
-export async function updateListNames(name: string): Promise<ServiceReturn> {
+export async function updateListNames(
+  newName: string,
+  userName: string,
+): Promise<ServiceReturn> {
   try {
-    const row = await db.myLists.get(userId)
+    const row = await db.myLists.get(userName)
 
     if (row) {
-      const newLists = row.listNames?.includes(name)
+      const newLists = row.listNames?.includes(newName)
         ? row.listNames
-        : [...(row.listNames ?? []), name]
+        : [...(row.listNames ?? []), newName]
 
-      await db.myLists.update(userId, { listNames: newLists, updatedAt: now() })
+      await db.myLists.update(userName, {
+        listNames: newLists,
+        updatedAt: now(),
+      })
       return {
         success: true,
-        message: `Successfully added ${name} to Lists.`,
+        message: `Successfully added ${newName} to Lists.`,
         data: newLists,
       }
     } else {
