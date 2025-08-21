@@ -14,7 +14,7 @@ export async function checkRowExists(userId: string) {
     if (!row) {
       const base: BookList = {
         userId,
-        listNames: ['Default'],
+        listNames: [],
         createdAt: now(),
         updatedAt: now(),
       }
@@ -22,15 +22,6 @@ export async function checkRowExists(userId: string) {
       return
     }
 
-    if (!row.listNames.includes('Default')) {
-      const updated: BookList = {
-        ...row,
-        listNames: [...row.listNames, 'default'],
-        updatedAt: now(),
-      }
-      await db.myLists.put(updated)
-      return
-    }
     return { success: true, message: 'Updated myLists table!', data: row }
   } catch (err) {
     return { success: false, message: `Error creating base row: ${err}` }

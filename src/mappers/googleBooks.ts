@@ -3,11 +3,23 @@ import type { GoogleBook, MyBook } from '@/types/book'
 /**
  * Maps data coming from Google Books to My Books
  */
-export function mapGoogleBookToMyBook(g: GoogleBook): MyBook {
+export function mapGoogleBookToMyBook(
+  g: GoogleBook,
+  listChoice: string[] = [],
+): MyBook {
   const v = g.volumeInfo
   const sa = g.saleInfo
   const a = g.accessInfo
   const se = g.searchInfo
+
+  const lists = Array.from(
+    new Set(
+      [
+        ...(listChoice?.filter(Boolean).map((s) => s.trim()) ?? []),
+        'Default',
+      ].filter((s) => s.length > 0),
+    ),
+  )
 
   return {
     // Base info
@@ -66,7 +78,7 @@ export function mapGoogleBookToMyBook(g: GoogleBook): MyBook {
     searchInfoTextSnippet: se?.textSnippet ?? 'UNKNOWN',
 
     // List info
-    lists: ['default'],
+    lists,
 
     // Created At info
     createdAt: Date.now(),

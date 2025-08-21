@@ -19,9 +19,12 @@ interface GoogleSearchResultProps {
 }
 
 const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
-  const handleSaveToMyLibrary = async (googleBook: GoogleBook) => {
+  const handleSaveToMyLibrary = async (
+    googleBook: GoogleBook,
+    saveToList: string[],
+  ) => {
     try {
-      const myBook = mapGoogleBookToMyBook(googleBook)
+      const myBook = mapGoogleBookToMyBook(googleBook, saveToList)
       const { success, message } = await saveToMyLibrary(myBook)
       if (success) {
         toast.success(message)
@@ -53,7 +56,7 @@ const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
                   <CardHeader>
                     <CardAction className='relative top-0 flex w-full justify-end'>
                       <Button
-                        onClick={() => handleSaveToMyLibrary(book)}
+                        onClick={() => handleSaveToMyLibrary(book, [])}
                         variant={'secondary'}
                         className='hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer'
                       >
