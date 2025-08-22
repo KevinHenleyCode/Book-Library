@@ -8,10 +8,11 @@ import {
   CardAction,
 } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { saveToMyLibrary } from '@/lib/libraryServices'
-import { BookmarkPlus } from 'lucide-react'
+import { isBookInMyLibrary, saveToMyLibrary } from '@/lib/libraryServices'
+import { BookmarkPlus, Check } from 'lucide-react'
 import type { GoogleBookList, GoogleBook } from '@/types/book'
 import { mapGoogleBookToMyBook } from '@/mappers/googleBooks'
+import { useState, useEffect, useCallback } from 'react'
 // import ListBlock from '@/components/home-page/result-hardware/list-block'
 
 interface GoogleSearchResultProps {
@@ -19,6 +20,18 @@ interface GoogleSearchResultProps {
 }
 
 const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
+
+  const checkSaved = useCallback(async () => {
+    const ids = await Promise.all(
+      results.map(async (book) => ({
+        id: book.id,
+        exists: await isBookInMyLibrary(book.id),
+      })),
+    )
+    setSavedIds(new Set(ids.filter((i) => i.exists).map((i) => i.id)))
+  }, [results])
+
   const handleSaveToMyLibrary = async (
     googleBook: GoogleBook,
     saveToList: string[],
@@ -28,6 +41,7 @@ const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
       const { success, message } = await saveToMyLibrary(myBook)
       if (success) {
         toast.success(message)
+        checkSaved()
       } else {
         console.error(message)
       }
@@ -35,6 +49,15 @@ const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
       console.error(err)
     }
   }
+
+  useEffect(() => {
+    if (results.length > 0) {
+      void checkSaved()
+    } else {
+      setSavedIds(new Set())
+      return
+    }
+  }, [checkSaved, results])
 
   return (
     <section className='mt-10 flex w-full justify-center'>
@@ -50,6 +73,7 @@ const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
         <ul className='3xl:grid-cols-5 4xl:grid-cols-7 5xl:grid-cols-9 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
           {results?.map((book) => {
             const info = book.volumeInfo
+            const inLibrary = savedIds.has(book.id)
             return (
               <li key={book.id}>
                 <Card className='h-full p-2'>
@@ -58,9 +82,14 @@ const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
                       <Button
                         onClick={() => handleSaveToMyLibrary(book, [])}
                         variant={'secondary'}
-                        className='hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer'
+                        className={`hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer ${inLibrary ? 'bg-background' : ''}`}
+                        disabled={inLibrary}
                       >
-                        <BookmarkPlus />
+                        {!inLibrary ? (
+                          <BookmarkPlus />
+                        ) : (
+                          <Check className='text-chart-2' strokeWidth={4} />
+                        )}
                       </Button>
                     </CardAction>
                     <CardContent className='flex justify-center'>

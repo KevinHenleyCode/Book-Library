@@ -25,6 +25,19 @@ export async function getAllFromMyLibrary(): Promise<ServiceReturn<MyBook[]>> {
 }
 
 /**
+ * Checks using ID to see if it exists in myLibrary
+ */
+export async function isBookInMyLibrary(id: string): Promise<boolean> {
+  try {
+    const book = await db.myLibrary.get(id)
+    return !!book
+  } catch (err) {
+    console.log(`Issue checking status of book: ${err}`)
+    return false
+  }
+}
+
+/**
  * Adds book to the IndexedDB
  */
 export async function saveToMyLibrary(myBook: MyBook): Promise<ServiceReturn> {
