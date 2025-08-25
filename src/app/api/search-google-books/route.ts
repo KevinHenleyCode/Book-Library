@@ -6,7 +6,8 @@ export async function POST(req: NextRequest) {
   const body = await req.json()
   const filterObj = body.filters
   const {
-    userInput,
+    userBaseInput,
+    userFineTuneInput,
     standardParameters,
     downloadable,
     digitalType,
@@ -17,8 +18,11 @@ export async function POST(req: NextRequest) {
     orderBy,
   }: BookSearch = filterObj
 
-  const standardParametersCleaned = `${encodeURIComponent(standardParameters)}:`
-  const userInputCleaned = encodeURIComponent(userInput)
+  const userBaseInputCleaned = encodeURIComponent(userBaseInput)
+  const standardParametersPlusFineTuneCleaned =
+    userFineTuneInput !== ''
+      ? `+${encodeURIComponent(standardParameters)}:${encodeURIComponent(userFineTuneInput)}`
+      : ''
   const downloadableCleaned = downloadable ? '&download=epub' : ''
   const digitalTypeCleaned =
     digitalType === 'null' ? '' : `&filter=${encodeURIComponent(digitalType)}`
@@ -29,9 +33,10 @@ export async function POST(req: NextRequest) {
   const orderByCleaned = `&orderBy=${encodeURIComponent(orderBy)}`
 
   const googleBaseUrl = `https://www.googleapis.com/books/v1/volumes?q=`
-  const userFilters = `${standardParametersCleaned}${userInputCleaned}${downloadableCleaned}${digitalTypeCleaned}${pageStartIndexCleaned}${pageMaxResultsCleaned}${printTypeCleaned}${projectionFullCleaned}${orderByCleaned}`
+  const userFilters = `${userBaseInputCleaned}${standardParametersPlusFineTuneCleaned}${downloadableCleaned}${digitalTypeCleaned}${pageStartIndexCleaned}${pageMaxResultsCleaned}${printTypeCleaned}${projectionFullCleaned}${orderByCleaned}`
   const apiKey = `&key=${process.env.GOOGLE_BOOKS_API_KEY}`
 
+  console.log(`${googleBaseUrl}${userFilters}`)
   const res = await fetch(`${googleBaseUrl}${userFilters}${apiKey}`)
 
   const data = await res.json()

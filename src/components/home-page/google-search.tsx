@@ -42,7 +42,8 @@ import { checkRowExists } from '@/lib/listServices'
 
 const GoogleSearch = () => {
   const [filters, setFilters] = useState<BookSearch>({
-    userInput: '',
+    userBaseInput: '',
+    userFineTuneInput: '',
     standardParameters: 'inauthor',
     downloadable: false,
     digitalType: 'null',
@@ -77,7 +78,7 @@ const GoogleSearch = () => {
 
   const fetchBooks = useCallback(async () => {
     const input = filtersRef.current
-    if (!input.userInput) return
+    if (!input.userBaseInput) return
 
     try {
       const res = await fetch('/api/search-google-books', {
@@ -109,23 +110,57 @@ const GoogleSearch = () => {
   useEffect(() => {
     getUserName()
     void fetchBooks()
-  }, [filters.pageStartIndex, fetchBooks])
+  }, [
+    filters.pageStartIndex,
+    filters.pageMaxResults,
+    filters.orderBy,
+    fetchBooks,
+  ])
 
   return (
     <div className='my-10 w-full'>
       <section className='mt-10'>
         <form onSubmit={handleSearchGoogleBooks}>
-          <div className='grid w-full gap-2 lg:justify-center'>
+          <div className='grid w-full gap-2 sm:justify-center'>
             <span className='grid grid-cols-4 gap-4'>
               <Input
                 type='text'
                 required
-                placeholder={`Search By: ${cleanStandardParameter(filters.standardParameters)}`}
-                value={filters.userInput}
+                placeholder={`Search for anything: Author, Title, Publisher...`}
+                value={filters.userBaseInput}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setFilters((prev) => ({ ...prev, userInput: e.target.value }))
+                  setFilters((prev) => ({
+                    ...prev,
+                    userBaseInput: e.target.value,
+                  }))
                 }
-                className='col-span-4 md:col-span-2'
+                className='col-span-3'
+              />
+              <span className='col-span-1 flex justify-center'>
+                <Button
+                  onClick={() =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      pageStartIndex: 0,
+                    }))
+                  }
+                  className='w-full hover:cursor-pointer'
+                  type='submit'
+                >
+                  Search
+                </Button>
+              </span>
+              <Input
+                type='text'
+                placeholder={`Fine Tune Search By: ${cleanStandardParameter(filters.standardParameters)}`}
+                value={filters.userFineTuneInput}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    userFineTuneInput: e.target.value,
+                  }))
+                }
+                className='col-span-2'
               />
               <Select
                 value={filters.standardParameters}
@@ -136,7 +171,7 @@ const GoogleSearch = () => {
                   }))
                 }
               >
-                <SelectTrigger className='col-span-4 w-full hover:cursor-pointer md:col-span-2 lg:col-span-1'>
+                <SelectTrigger className='col-span-2 w-full hover:cursor-pointer'>
                   <SelectValue
                     placeholder={cleanStandardParameter(
                       filters.standardParameters,
@@ -156,20 +191,6 @@ const GoogleSearch = () => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <span className='col-span-4 flex justify-center lg:col-span-1'>
-                <Button
-                  onClick={() =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      pageStartIndex: 0,
-                    }))
-                  }
-                  className='w-1/2 hover:cursor-pointer lg:w-full'
-                  type='submit'
-                >
-                  Search
-                </Button>
-              </span>
             </span>
             <Collapsible className='mt-4'>
               <CollapsibleTrigger

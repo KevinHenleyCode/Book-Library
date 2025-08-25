@@ -13,6 +13,7 @@ import { BookmarkPlus, Check } from 'lucide-react'
 import type { GoogleBookList, GoogleBook } from '@/types/book'
 import { mapGoogleBookToMyBook } from '@/mappers/googleBooks'
 import { useState, useEffect, useCallback } from 'react'
+import NoBookImage from '../../../public/images/no-book-image.svg'
 // import ListBlock from '@/components/home-page/result-hardware/list-block'
 
 interface GoogleSearchResultProps {
@@ -92,30 +93,43 @@ const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
                         )}
                       </Button>
                     </CardAction>
-                    <CardContent className='flex justify-center'>
+                    <CardContent className='flex h-[200px] justify-center py-1'>
                       {/* ________________________________TEST________________________________ */}
                       {/* <ListBlock /> */}
                       {/* ________________________________TEST________________________________ */}
                       {info?.imageLinks ? (
                         <Image
-                          src={info.imageLinks.smallThumbnail}
+                          src={info.imageLinks.thumbnail}
                           alt={info.title}
                           width={100}
                           height={100}
-                          className='aspect-[6/9] h-auto w-auto rounded-sm shadow-md shadow-black'
+                          className='aspect-[6/9] w-auto rounded-sm shadow-md shadow-black'
                         />
                       ) : (
-                        <span className='text-destructive flex aspect-[6/9] h-full w-1/2 flex-col items-center justify-center rounded-sm shadow-md shadow-black sm:w-4/5 md:w-3/5'>
-                          <span>Sorry No</span>
-                          <span>Image Yet</span>
-                        </span>
+                        <div className='bg-muted relative aspect-[6/9] w-auto rounded-sm shadow-md shadow-black'>
+                          <span className='text-destructive absolute top-0 z-20 flex h-full w-full flex-col justify-between text-center text-xl font-semibold tracking-wider'>
+                            <p>Sorry No</p>
+                            <p>Image Yet</p>
+                          </span>
+                          <Image
+                            src={NoBookImage}
+                            alt={info.title}
+                            width={100}
+                            height={100}
+                            className='h-full w-full'
+                          />
+                        </div>
                       )}
                     </CardContent>
-                    <CardTitle className='text-center text-xl'>
+                    <CardTitle className='truncate text-center text-xl'>
                       {info.title}
                     </CardTitle>
                     <CardContent className='text-md text-center'>
-                      {info.authors}
+                      {info.authors?.map((author, index) => (
+                        <p key={index} className={index >= 2 ? 'hidden' : ''}>
+                          {author}
+                        </p>
+                      ))}
                     </CardContent>
                   </CardHeader>
                 </Card>

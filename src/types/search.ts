@@ -18,7 +18,8 @@ export type PrintType = 'all' | 'books' | 'magazines'
 export type OrderBy = 'relevance' | 'newest'
 
 export type BookSearch = {
-  userInput: string
+  userBaseInput: string
+  userFineTuneInput: string
   standardParameters: StandardParameters
   downloadable: boolean
   digitalType: DigitalType
