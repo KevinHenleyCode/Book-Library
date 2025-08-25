@@ -122,7 +122,7 @@ const GoogleSearch = () => {
       <section className='mt-10'>
         <form onSubmit={handleSearchGoogleBooks}>
           <div className='grid w-full gap-2 sm:justify-center'>
-            <span className='grid grid-cols-4 gap-4'>
+            <span className='grid grid-cols-12 gap-4'>
               <Input
                 type='text'
                 required
@@ -134,9 +134,9 @@ const GoogleSearch = () => {
                     userBaseInput: e.target.value,
                   }))
                 }
-                className='col-span-3'
+                className='col-span-9 truncate'
               />
-              <span className='col-span-1 flex justify-center'>
+              <span className='col-span-3 flex justify-center'>
                 <Button
                   onClick={() =>
                     setFilters((prev) => ({
@@ -152,7 +152,7 @@ const GoogleSearch = () => {
               </span>
               <Input
                 type='text'
-                placeholder={`Fine Tune Search By: ${cleanStandardParameter(filters.standardParameters)}`}
+                placeholder={`Fine Tune Search By:`}
                 value={filters.userFineTuneInput}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setFilters((prev) => ({
@@ -160,7 +160,7 @@ const GoogleSearch = () => {
                     userFineTuneInput: e.target.value,
                   }))
                 }
-                className='col-span-2'
+                className='col-span-7 truncate'
               />
               <Select
                 value={filters.standardParameters}
@@ -171,7 +171,7 @@ const GoogleSearch = () => {
                   }))
                 }
               >
-                <SelectTrigger className='col-span-2 w-full hover:cursor-pointer'>
+                <SelectTrigger className='col-span-5 w-full hover:cursor-pointer'>
                   <SelectValue
                     placeholder={cleanStandardParameter(
                       filters.standardParameters,

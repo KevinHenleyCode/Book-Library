@@ -13,7 +13,7 @@ import { BookmarkPlus, Check } from 'lucide-react'
 import type { GoogleBookList, GoogleBook } from '@/types/book'
 import { mapGoogleBookToMyBook } from '@/mappers/googleBooks'
 import { useState, useEffect, useCallback } from 'react'
-import NoBookImage from '../../../public/images/no-book-image.svg'
+import NoBookImage from '@/assets/no-book-image.svg'
 // import ListBlock from '@/components/home-page/result-hardware/list-block'
 
 interface GoogleSearchResultProps {
@@ -111,12 +111,9 @@ const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
                             <p>Sorry No</p>
                             <p>Image Yet</p>
                           </span>
-                          <Image
-                            src={NoBookImage}
+                          <NoBookImage
+                            className='text-foreground h-full w-full'
                             alt={info.title}
-                            width={100}
-                            height={100}
-                            className='h-full w-full'
                           />
                         </div>
                       )}

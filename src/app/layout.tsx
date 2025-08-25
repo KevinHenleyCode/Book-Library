@@ -56,7 +56,7 @@ export default function RootLayout({
           <SidebarProvider>
             <AppSidebar />
             <main className='w-full'>
-              <SidebarTrigger className='hover:cursor-pointer' />
+              <SidebarTrigger className='h-fit w-fit p-2 hover:cursor-pointer' />
               {children}
             </main>
             <Toaster />

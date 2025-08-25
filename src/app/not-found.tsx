@@ -1,8 +1,6 @@
 'use client'
 import Link from 'next/link'
-import Image from 'next/image'
-import notFoundIcon from '../../public/images/not-found.svg'
-import { AspectRatio } from '@/components/ui/aspect-ratio'
+import NotFoundImage from '@/assets/not-found-image.svg'
 import { Button } from '@/components/ui/button'
 import { CornerDownLeft } from 'lucide-react'
 
@@ -21,9 +19,12 @@ export default function NotFound() {
           Return Home
         </Button>
       </Link>
-      <AspectRatio ratio={16 / 9}>
-        <Image src={notFoundIcon} alt={'Not Found Icon'} fill />
-      </AspectRatio>
+      <div className='4xl:w-1/4 5xl:w-1/6 w-full sm:w-1/2 xl:w-1/3'>
+        <NotFoundImage
+          alt='Not Found Icon'
+          className='text-foreground h-full w-full'
+        />
+      </div>
     </section>
   )
 }
