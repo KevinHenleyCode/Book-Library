@@ -83,7 +83,7 @@ export function AppSidebar() {
                 ) : (
                   <Sun className='text-chart-4' />
                 )}
-                <span>Theme</span>
+                {/* <span>Theme</span> */}
               </SidebarMenuButton>
               <Link href={'https://kevinhenleycode.com/'}>
                 <SidebarMenuButton
