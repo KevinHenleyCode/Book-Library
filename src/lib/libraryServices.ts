@@ -53,6 +53,27 @@ export async function saveToMyLibrary(myBook: MyBook): Promise<ServiceReturn> {
 }
 
 /**
+ * Gets all lists a book has been added to
+ */
+export async function getAllLists(
+  id: string,
+): Promise<ServiceReturn<string[]>> {
+  try {
+    const bookInMyLibrary = await db.myLibrary.get(id)
+    if (!bookInMyLibrary) {
+      return { success: false, message: `Book not in myLibrary` }
+    }
+    return {
+      success: true,
+      message: 'Got all lists for book!',
+      data: bookInMyLibrary.lists ?? [],
+    }
+  } catch (err) {
+    return { success: false, message: `Couldn't get all lists: ${err}` }
+  }
+}
+
+/**
  * Removes book from myLibrary Database
  */
 export async function deleteFromMyLibrary(

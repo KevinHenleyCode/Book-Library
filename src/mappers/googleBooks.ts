@@ -14,10 +14,9 @@ export function mapGoogleBookToMyBook(
 
   const lists = Array.from(
     new Set(
-      [
-        ...(listChoice?.filter(Boolean).map((s) => s.trim()) ?? []),
-        'Default',
-      ].filter((s) => s.length > 0),
+      [...(listChoice?.filter(Boolean).map((s) => s.trim()) ?? [])].filter(
+        (s) => s.length > 0,
+      ),
     ),
   )
 

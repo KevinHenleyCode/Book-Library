@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardHeader,
@@ -9,22 +8,18 @@ import {
 } from '@/components/ui/card'
 import { toast } from 'sonner'
 import { isBookInMyLibrary, saveToMyLibrary } from '@/lib/libraryServices'
-import { BookmarkPlus, Check } from 'lucide-react'
 import type { GoogleBookList, GoogleBook } from '@/types/book'
 import { mapGoogleBookToMyBook } from '@/mappers/googleBooks'
 import { useState, useEffect, useCallback } from 'react'
 import NoBookImage from '@/assets/no-book-image.svg'
-// import ListBlock from '@/components/home-page/result-hardware/list-block'
+import ListBlock from '@/components/home-page/result-hardware/list-block'
 
 interface GoogleSearchResultProps {
   results: GoogleBookList
-  userName?: string
+  userName: string
 }
 
-const GoogleSearchResult = ({
-  results,
-  // userName
-}: GoogleSearchResultProps) => {
+const GoogleSearchResult = ({ results, userName }: GoogleSearchResultProps) => {
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
 
   const checkSaved = useCallback(async () => {
@@ -84,23 +79,14 @@ const GoogleSearchResult = ({
                 <Card className='h-full p-2'>
                   <CardHeader>
                     <CardAction className='relative top-0 flex w-full justify-end'>
-                      <Button
-                        onClick={() => handleSaveToMyLibrary(book, [])}
-                        variant={'secondary'}
-                        className={`hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer ${inLibrary ? 'bg-background' : ''}`}
-                        disabled={inLibrary}
-                      >
-                        {!inLibrary ? (
-                          <BookmarkPlus />
-                        ) : (
-                          <Check className='text-chart-2' strokeWidth={4} />
-                        )}
-                      </Button>
+                      <ListBlock
+                        userName={userName}
+                        inLibrary={inLibrary}
+                        book={book}
+                        handleSaveToMyLibrary={handleSaveToMyLibrary}
+                      />
                     </CardAction>
                     <CardContent className='flex h-[200px] justify-center py-1'>
-                      {/* ________________________________TEST________________________________ */}
-                      {/* <ListBlock userName={userName} /> */}
-                      {/* ________________________________TEST________________________________ */}
                       {info?.imageLinks ? (
                         <Image
                           src={info.imageLinks.thumbnail}
