@@ -48,25 +48,25 @@ export async function getAllListNames(): Promise<ServiceReturn<BookList[]>> {
  * Adds a new listName to myLists table
  */
 export async function updateListNames(
-  newName: string,
+  newListName: string,
   userName: string,
 ): Promise<ServiceReturn> {
   try {
     const row = await db.myLists.get(userName)
 
     if (row) {
-      const newLists = row.listNames?.includes(newName)
+      const newListNames = row.listNames?.includes(newListName)
         ? row.listNames
-        : [...(row.listNames ?? []), newName]
+        : [...(row.listNames ?? []), newListName]
 
       await db.myLists.update(userName, {
-        listNames: newLists,
+        listNames: newListNames,
         updatedAt: now(),
       })
       return {
         success: true,
-        message: `Successfully added ${newName} to Lists.`,
-        data: newLists,
+        message: `Successfully added ${newListName} to Lists.`,
+        data: newListNames,
       }
     } else {
       return { success: false, message: `Error with DataBase.` }

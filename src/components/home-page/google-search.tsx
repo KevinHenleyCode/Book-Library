@@ -54,12 +54,14 @@ const GoogleSearch = () => {
     orderBy: 'relevance',
   })
   const [results, setResults] = useState<GoogleBookList>([])
+  const [userName, setUserName] = useState<string>('')
 
   const getUserName = async () => {
     const res = await fetch('/api/user-info')
     const result = await res.json()
     if (result.success) {
       checkRowExists(result.userName)
+      setUserName(result.userName)
     }
   }
 
@@ -323,7 +325,7 @@ const GoogleSearch = () => {
           </Select>
         </div>
       </section>
-      <GoogleSearchResult results={results} />
+      <GoogleSearchResult results={results} userName={userName} />
       <Separator className='my-4' />
       <section>
         <div className='relative my-10'>

@@ -18,9 +18,13 @@ import NoBookImage from '@/assets/no-book-image.svg'
 
 interface GoogleSearchResultProps {
   results: GoogleBookList
+  userName?: string
 }
 
-const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
+const GoogleSearchResult = ({
+  results,
+  // userName
+}: GoogleSearchResultProps) => {
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
 
   const checkSaved = useCallback(async () => {
@@ -95,7 +99,7 @@ const GoogleSearchResult = ({ results }: GoogleSearchResultProps) => {
                     </CardAction>
                     <CardContent className='flex h-[200px] justify-center py-1'>
                       {/* ________________________________TEST________________________________ */}
-                      {/* <ListBlock /> */}
+                      {/* <ListBlock userName={userName} /> */}
                       {/* ________________________________TEST________________________________ */}
                       {info?.imageLinks ? (
                         <Image
