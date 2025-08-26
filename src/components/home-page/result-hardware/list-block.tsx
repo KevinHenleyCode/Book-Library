@@ -79,7 +79,7 @@ const ListBlock = ({
 
   useEffect(() => {
     handleGetAllListNames()
-  }, [handleGetAllListNames])
+  }, [handleGetAllListNames, allMyLists])
   return (
     <Drawer>
       <DrawerTrigger asChild>

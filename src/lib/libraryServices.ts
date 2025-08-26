@@ -43,7 +43,7 @@ export async function isBookInMyLibrary(id: string): Promise<boolean> {
 export async function saveToMyLibrary(myBook: MyBook): Promise<ServiceReturn> {
   try {
     await db.myLibrary.put(myBook)
-    return { success: true, message: `Added ${myBook.title} to library!` }
+    return { success: true, message: `Updated ${myBook.title} in My Library!` }
   } catch (err) {
     return {
       success: false,
