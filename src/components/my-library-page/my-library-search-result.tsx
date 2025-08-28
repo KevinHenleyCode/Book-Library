@@ -8,7 +8,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import Image from 'next/image'
-import { deleteFromMyLibrary } from '@/lib/libraryServices'
+import { deleteBookFromMyLibrary } from '@/lib/libraryServices'
 import { Trash2 } from 'lucide-react'
 import type { MyBookList } from '@/types/book'
 
@@ -21,8 +21,8 @@ const MyLibrarySearchResult = ({
   books,
   handleGetBooksFromMyLibrary,
 }: MyLibrarySearchResultProps) => {
-  const handleDeleteFromMyLibrary = async (id: string, title: string) => {
-    const { success, message } = await deleteFromMyLibrary(id, title)
+  const handleDeleteBookFromMyLibrary = async (id: string, title: string) => {
+    const { success, message } = await deleteBookFromMyLibrary(id, title)
 
     if (success) {
       handleGetBooksFromMyLibrary()
@@ -52,7 +52,7 @@ const MyLibrarySearchResult = ({
                     <CardAction className='relative top-0 flex w-full justify-end'>
                       <Button
                         onClick={() =>
-                          handleDeleteFromMyLibrary(book.id, book.title)
+                          handleDeleteBookFromMyLibrary(book.id, book.title)
                         }
                         variant={'secondary'}
                         className='hover:text-destructive absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer'

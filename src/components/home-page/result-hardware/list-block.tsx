@@ -27,6 +27,7 @@ interface ListBlockProps {
   handleSaveToMyLibrary: (
     googleBook: GoogleBook,
     saveToList: string[],
+    checkInMyLibrary: boolean,
   ) => Promise<void>
 }
 
@@ -35,7 +36,7 @@ interface ListBlockProps {
  */
 const ListBlock = ({
   userName,
-  // inLibrary,
+  inLibrary,
   book,
   handleSaveToMyLibrary,
 }: ListBlockProps) => {
@@ -83,7 +84,9 @@ const ListBlock = ({
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button className='hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer'>
+        <Button
+          className={`hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer ${inLibrary ? 'text-green-500' : ''}`}
+        >
           <BookmarkPlus />
         </Button>
       </DrawerTrigger>
@@ -96,7 +99,7 @@ const ListBlock = ({
         </DrawerHeader>
         <Button
           onClick={() =>
-            handleSaveToMyLibrary(book, Array.from(currentBookLists))
+            handleSaveToMyLibrary(book, Array.from(currentBookLists), inLibrary)
           }
           className='mx-auto mb-4 w-fit hover:cursor-pointer'
         >
@@ -121,7 +124,11 @@ const ListBlock = ({
                         updatedBookLists.delete(availableList)
                       }
                       setCurrentBookLists(updatedBookLists)
-                      handleSaveToMyLibrary(book, Array.from(updatedBookLists))
+                      handleSaveToMyLibrary(
+                        book,
+                        Array.from(updatedBookLists),
+                        inLibrary,
+                      )
                     }}
                     className='mr-2 h-5 w-5'
                   />

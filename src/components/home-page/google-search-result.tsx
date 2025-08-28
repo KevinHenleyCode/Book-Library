@@ -7,7 +7,11 @@ import {
   CardAction,
 } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { isBookInMyLibrary, saveToMyLibrary } from '@/lib/libraryServices'
+import {
+  isBookInMyLibrary,
+  saveToMyLibrary,
+  updateTheBooksLists,
+} from '@/lib/libraryServices'
 import type { GoogleBookList, GoogleBook } from '@/types/book'
 import { mapGoogleBookToMyBook } from '@/mappers/googleBooks'
 import { useState, useEffect, useCallback } from 'react'
@@ -35,15 +39,29 @@ const GoogleSearchResult = ({ results, userName }: GoogleSearchResultProps) => {
   const handleSaveToMyLibrary = async (
     googleBook: GoogleBook,
     saveToList: string[],
+    checkInMyLibrary: boolean,
   ) => {
     try {
-      const myBook = mapGoogleBookToMyBook(googleBook, saveToList)
-      const { success, message } = await saveToMyLibrary(myBook)
-      if (success) {
-        toast.success(message)
-        checkSaved()
+      if (checkInMyLibrary === false) {
+        const myBook = mapGoogleBookToMyBook(googleBook, saveToList)
+        const { success, message } = await saveToMyLibrary(myBook)
+        if (success) {
+          toast.success(message)
+          checkSaved()
+        } else {
+          console.error(message)
+        }
       } else {
-        console.error(message)
+        const { success, message } = await updateTheBooksLists(
+          googleBook,
+          saveToList,
+        )
+
+        if (success) {
+          toast.success(message)
+        } else {
+          console.error(message)
+        }
       }
     } catch (err) {
       console.error(err)

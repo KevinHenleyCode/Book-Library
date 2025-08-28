@@ -82,6 +82,6 @@ export function mapGoogleBookToMyBook(
     // Created At info
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    deletedAt: null,
+    deletedAt: 0,
   } as const
 }
