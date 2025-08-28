@@ -3,7 +3,7 @@ import type { MyBook } from '@/types/book'
 import type { ServiceReturn } from '@/types/return'
 
 /**
- * Retrieves all books of a given parameter from Google Books API
+ * Retrieves all books of a given parameter from myLibrary
  */
 export async function getAllFromMyLibrary(): Promise<ServiceReturn<MyBook[]>> {
   try {
@@ -15,6 +15,30 @@ export async function getAllFromMyLibrary(): Promise<ServiceReturn<MyBook[]>> {
       success: true,
       message: 'Retrieved all books!',
       data: allMyBooks,
+    }
+  } catch (err) {
+    return {
+      success: false,
+      message: `There was an error fetching your books: ${err}`,
+    }
+  }
+}
+
+/**
+ * Retrieves all books of a given list from myLibrary
+ */
+export async function getAllFromMyList(
+  listName: string,
+): Promise<ServiceReturn<MyBook[]>> {
+  try {
+    const allMyBooksInCurrentList = await db.myLibrary
+      .where('lists')
+      .equals(listName)
+      .toArray()
+    return {
+      success: true,
+      message: `Retrieved all books from list ${listName}!`,
+      data: allMyBooksInCurrentList,
     }
   } catch (err) {
     return {

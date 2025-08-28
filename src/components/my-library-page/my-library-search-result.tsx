@@ -14,18 +14,18 @@ import type { MyBookList } from '@/types/book'
 
 interface MyLibrarySearchResultProps {
   books: MyBookList
-  handleGetAllFromMyLibrary: () => Promise<void>
+  handleGetBooksFromMyLibrary: () => Promise<void>
 }
 
 const MyLibrarySearchResult = ({
   books,
-  handleGetAllFromMyLibrary,
+  handleGetBooksFromMyLibrary,
 }: MyLibrarySearchResultProps) => {
   const handleDeleteFromMyLibrary = async (id: string, title: string) => {
     const { success, message } = await deleteFromMyLibrary(id, title)
 
     if (success) {
-      handleGetAllFromMyLibrary()
+      handleGetBooksFromMyLibrary()
       toast.error(message)
     } else {
       console.error(message)

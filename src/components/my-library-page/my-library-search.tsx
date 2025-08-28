@@ -1,35 +1,50 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import MyLibrarySearchResult from './my-library-search-result'
-import { getAllFromMyLibrary } from '@/lib/libraryServices'
+import { getAllFromMyLibrary, getAllFromMyList } from '@/lib/libraryServices'
 import type { MyBookList } from '@/types/book'
 import { Separator } from '@/components/ui/separator'
+import MyLibraryFilter from './my-library-filter'
 
+/**
+ * Container for the search and results of My Library
+ */
 const MyLibrarySearch = () => {
   const [books, setBooks] = useState<MyBookList>([])
+  const [listName, setListName] = useState<string>('All Books')
 
-  const handleGetAllFromMyLibrary = async () => {
-    const { success, data } = await getAllFromMyLibrary()
+  const handleGetBooksFromMyLibrary = useCallback(async () => {
+    if (listName === 'All Books') {
+      const { success, data } = await getAllFromMyLibrary()
 
-    if (success) {
-      setBooks(data ?? [])
+      if (success) {
+        setBooks(data ?? [])
+      } else {
+        setBooks([])
+      }
     } else {
-      setBooks([])
+      const { success, data } = await getAllFromMyList(listName ?? '')
+
+      if (success) {
+        setBooks(data ?? [])
+      } else {
+        setBooks([])
+      }
     }
-  }
+  }, [listName])
 
   useEffect(() => {
-    handleGetAllFromMyLibrary()
-  }, [])
+    handleGetBooksFromMyLibrary()
+  }, [handleGetBooksFromMyLibrary, listName])
 
   return (
-    <div className='w-full'>
-      <section></section>
+    <div className='my-10 w-full'>
+      <MyLibraryFilter listName={listName} setListName={setListName} />
       <Separator className='mt-10' />
       <MyLibrarySearchResult
         books={books}
-        handleGetAllFromMyLibrary={handleGetAllFromMyLibrary}
+        handleGetBooksFromMyLibrary={handleGetBooksFromMyLibrary}
       />
     </div>
   )
