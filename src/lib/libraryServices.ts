@@ -5,40 +5,26 @@ import type { ServiceReturn } from '@/types/return'
 /**
  * Retrieves all books of a given parameter from myLibrary
  */
-export async function getAllFromMyLibrary(): Promise<ServiceReturn<MyBook[]>> {
-  try {
-    const allMyBooks = await db.myLibrary
-      .orderBy('createdAt')
-      .reverse()
-      .toArray()
-    return {
-      success: true,
-      message: 'Retrieved all books!',
-      data: allMyBooks,
-    }
-  } catch (err) {
-    return {
-      success: false,
-      message: `There was an error fetching your books: ${err}`,
-    }
-  }
-}
-
-/**
- * Retrieves all books of a given list from myLibrary
- */
-export async function getAllFromMyList(
+export async function getBooksFromMyLibrary(
   listName: string,
 ): Promise<ServiceReturn<MyBook[]>> {
   try {
-    const allMyBooksInCurrentList = await db.myLibrary
-      .where('lists')
-      .equals(listName)
-      .toArray()
+    let allBooksFromList: MyBook[] = []
+    if (listName === 'All Books') {
+      allBooksFromList = await db.myLibrary
+        .orderBy('createdAt')
+        .reverse()
+        .toArray()
+    } else {
+      allBooksFromList = await db.myLibrary
+        .where('lists')
+        .equals(listName)
+        .toArray()
+    }
     return {
       success: true,
-      message: `Retrieved all books from list ${listName}!`,
-      data: allMyBooksInCurrentList,
+      message: 'Retrieved all books!',
+      data: allBooksFromList,
     }
   } catch (err) {
     return {

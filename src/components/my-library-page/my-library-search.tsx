@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import MyLibrarySearchResult from './my-library-search-result'
-import { getAllFromMyLibrary, getAllFromMyList } from '@/lib/libraryServices'
+import { getBooksFromMyLibrary } from '@/lib/libraryServices'
 import type { MyBookList } from '@/types/book'
 import { Separator } from '@/components/ui/separator'
 import MyLibraryFilter from './my-library-filter'
@@ -15,22 +15,12 @@ const MyLibrarySearch = () => {
   const [listName, setListName] = useState<string>('All Books')
 
   const handleGetBooksFromMyLibrary = useCallback(async () => {
-    if (listName === 'All Books') {
-      const { success, data } = await getAllFromMyLibrary()
+    const { success, data } = await getBooksFromMyLibrary(listName)
 
-      if (success) {
-        setBooks(data ?? [])
-      } else {
-        setBooks([])
-      }
+    if (success) {
+      setBooks(data ?? [])
     } else {
-      const { success, data } = await getAllFromMyList(listName ?? '')
-
-      if (success) {
-        setBooks(data ?? [])
-      } else {
-        setBooks([])
-      }
+      setBooks([])
     }
   }, [listName])
 
