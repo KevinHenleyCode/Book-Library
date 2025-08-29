@@ -75,3 +75,31 @@ export async function updateListNames(
     return { success: false, message: `Error updating Lists: ${err}` }
   }
 }
+
+/**
+ * Deletes a listName from myLists table
+ */
+export async function deleteListName(
+  userName: string,
+  currentListName: string,
+): Promise<ServiceReturn> {
+  try {
+    const row = await db.myLists.get(userName)
+
+    if (row) {
+      await db.myLists.update(userName, {
+        listNames: row.listNames.filter((l) => l !== currentListName),
+        updatedAt: now(),
+      })
+
+      return {
+        success: true,
+        message: `Successfully deleted ${currentListName} from Lists.`,
+      }
+    } else {
+      return { success: false, message: `Error with DataBase.` }
+    }
+  } catch (err) {
+    return { success: false, message: `Error updating Lists: ${err}` }
+  }
+}

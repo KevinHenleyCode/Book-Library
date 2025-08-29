@@ -17,8 +17,9 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import AddNewList from './add-new-list'
 import type { GoogleBook } from '@/types/book'
-import { getAllLists } from '@/lib/libraryServices'
-import { BookmarkPlus } from 'lucide-react'
+import { getAllLists, deleteThisListFromBooks } from '@/lib/libraryServices'
+import { BookmarkPlus, CircleMinus } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface ListBlockProps {
   userName: string
@@ -78,6 +79,20 @@ const ListBlock = ({
     }
   }
 
+  const handleDeleteThisListFromBooks = async (listName: string) => {
+    try {
+      const { success, message } = await deleteThisListFromBooks(
+        userName,
+        listName,
+      )
+      if (success) {
+        toast.error(message)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     handleGetAllListNames()
   }, [handleGetAllListNames, allMyLists])
@@ -85,7 +100,7 @@ const ListBlock = ({
     <Drawer>
       <DrawerTrigger asChild>
         <Button
-          className={`hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer ${inLibrary ? 'text-green-500' : ''}`}
+          className={`hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer ${inLibrary ? 'text-chart-2 bg-background hover:bg-muted' : ''}`}
         >
           <BookmarkPlus />
         </Button>
@@ -112,33 +127,44 @@ const ListBlock = ({
             </h4>
             {Array.from(allMyLists).map((availableList, index) => (
               <div key={index}>
-                <span className='flex items-end'>
-                  <Checkbox
-                    id={availableList}
-                    checked={currentBookLists.has(availableList)}
-                    onCheckedChange={(checked) => {
-                      const updatedBookLists = new Set(currentBookLists)
-                      if (checked) {
-                        updatedBookLists.add(availableList)
-                      } else {
-                        updatedBookLists.delete(availableList)
-                      }
-                      setCurrentBookLists(updatedBookLists)
-                      handleSaveToMyLibrary(
-                        book,
-                        Array.from(updatedBookLists),
-                        inLibrary,
-                      )
-                    }}
-                    className='mr-2 h-5 w-5'
-                  />
-                  <Label
-                    htmlFor={availableList}
-                    className='text-md align-text-bottom'
+                <div className='flex items-end justify-between'>
+                  <span className='flex'>
+                    <Checkbox
+                      id={availableList}
+                      checked={currentBookLists.has(availableList)}
+                      onCheckedChange={(checked) => {
+                        const updatedBookLists = new Set(currentBookLists)
+                        if (checked) {
+                          updatedBookLists.add(availableList)
+                        } else {
+                          updatedBookLists.delete(availableList)
+                        }
+                        setCurrentBookLists(updatedBookLists)
+                        handleSaveToMyLibrary(
+                          book,
+                          Array.from(updatedBookLists),
+                          inLibrary,
+                        )
+                      }}
+                      className='mr-2 h-5 w-5'
+                    />
+                    <Label
+                      htmlFor={availableList}
+                      className='text-md align-text-bottom'
+                    >
+                      {availableList}
+                    </Label>
+                  </span>
+                  <Button
+                    size={'sm'}
+                    variant={'ghost'}
+                    type='submit'
+                    className='h-5 w-8 p-4 hover:cursor-pointer'
+                    onClick={() => handleDeleteThisListFromBooks(availableList)}
                   >
-                    {availableList}
-                  </Label>
-                </span>
+                    <CircleMinus className='text-chart-5' />
+                  </Button>
+                </div>
                 <Separator className='bg-muted mb-1' />
               </div>
             ))}
