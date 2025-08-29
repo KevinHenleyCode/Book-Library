@@ -63,8 +63,7 @@ export async function deleteBookFromMyLibrary(
 ): Promise<ServiceReturn> {
   try {
     // await db.myLibrary.delete(id)
-    await db.myLibrary.update(id, { lists: [] })
-    await db.myLibrary.update(id, { deletedAt: now() })
+    await db.myLibrary.update(id, { lists: [], deletedAt: now() })
     return { success: true, message: `Removed ${title} from library.` }
   } catch (err) {
     return {

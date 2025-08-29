@@ -8,8 +8,9 @@ class TheLibraryDB extends Dexie {
 
   constructor() {
     super('theLibrary')
-    this.version(2).stores({
-      myLibrary: 'id, title, *lists, createdAt, updatedAt, deletedAt',
+    this.version(3).stores({
+      myLibrary:
+        'id, [id+deletedAt], title, *lists, createdAt, updatedAt, deletedAt',
       myLists: 'userId, *listNames, updatedAt',
     })
   }
