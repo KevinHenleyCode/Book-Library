@@ -100,7 +100,7 @@ const ListBlock = ({
     <Drawer>
       <DrawerTrigger asChild>
         <Button
-          className={`hover:text-chart-2 absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer ${inLibrary ? 'text-chart-2 bg-background hover:bg-muted' : ''}`}
+          className={`hover:text-chart-2 transition-all duration-200 ease-in-out hover:cursor-pointer ${inLibrary ? 'text-chart-2 bg-background hover:bg-muted' : ''}`}
         >
           <BookmarkPlus />
         </Button>

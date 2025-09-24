@@ -17,6 +17,7 @@ import { mapGoogleBookToMyBook } from '@/mappers/googleBooks'
 import { useState, useEffect, useCallback } from 'react'
 import NoBookImage from '@/assets/no-book-image.svg'
 import ListBlock from '@/components/home-page/result-hardware/list-block'
+import MoreInfoSheet from '@/components/home-page/result-hardware/more-info-sheet'
 
 interface GoogleSearchResultProps {
   results: GoogleBookList
@@ -94,16 +95,17 @@ const GoogleSearchResult = ({ results, userName }: GoogleSearchResultProps) => {
             const inLibrary = savedIds.has(book.id)
             return (
               <li key={book.id}>
-                <Card className='h-full p-2'>
+                <Card className='h-full p-4'>
+                  <CardAction className='flex w-full justify-between'>
+                    <MoreInfoSheet book={book} />
+                    <ListBlock
+                      userName={userName}
+                      inLibrary={inLibrary}
+                      book={book}
+                      handleSaveToMyLibrary={handleSaveToMyLibrary}
+                    />
+                  </CardAction>
                   <CardHeader>
-                    <CardAction className='relative top-0 flex w-full justify-end'>
-                      <ListBlock
-                        userName={userName}
-                        inLibrary={inLibrary}
-                        book={book}
-                        handleSaveToMyLibrary={handleSaveToMyLibrary}
-                      />
-                    </CardAction>
                     <CardContent className='flex h-[200px] justify-center py-1'>
                       {info?.imageLinks ? (
                         <Image
