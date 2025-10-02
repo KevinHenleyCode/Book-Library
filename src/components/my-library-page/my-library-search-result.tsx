@@ -11,6 +11,7 @@ import Image from 'next/image'
 import { deleteBookFromMyLibrary } from '@/lib/libraryServices'
 import { Trash2 } from 'lucide-react'
 import type { MyBookList } from '@/types/book'
+// import EditInfoSheet from './edit-info-sheet'
 
 interface MyLibrarySearchResultProps {
   books: MyBookList
@@ -47,20 +48,21 @@ const MyLibrarySearchResult = ({
           {books.map((book) => {
             return (
               <li key={book.id}>
-                <Card className='h-full'>
+                <Card className='h-full p-4'>
+                  <CardAction className='flex w-full justify-end'>
+                    {/* <EditInfoSheet book={book} /> */}
+                    <Button
+                      onClick={() =>
+                        handleDeleteBookFromMyLibrary(book.id, book.title)
+                      }
+                      variant={'secondary'}
+                      className='hover:text-destructive transition-all duration-200 ease-in-out hover:cursor-pointer'
+                    >
+                      <Trash2 />
+                    </Button>
+                  </CardAction>
                   <CardHeader>
-                    <CardAction className='relative top-0 flex w-full justify-end'>
-                      <Button
-                        onClick={() =>
-                          handleDeleteBookFromMyLibrary(book.id, book.title)
-                        }
-                        variant={'secondary'}
-                        className='hover:text-destructive absolute -right-4 transition-all duration-200 ease-in-out hover:cursor-pointer'
-                      >
-                        <Trash2 />
-                      </Button>
-                    </CardAction>
-                    <CardContent className='flex justify-center'>
+                    <CardContent className='flex h-[200px] justify-center py-1'>
                       {book?.imageLinksThumbnail ||
                       book?.imageLinksSmallThumbnail ? (
                         <Image
@@ -71,7 +73,7 @@ const MyLibrarySearchResult = ({
                           alt={book.title}
                           width={100}
                           height={100}
-                          className='aspect-[6/9] h-auto w-auto rounded-sm shadow-md shadow-black'
+                          className='aspect-[6/9] w-auto rounded-sm shadow-md shadow-black'
                         />
                       ) : null}
                     </CardContent>
