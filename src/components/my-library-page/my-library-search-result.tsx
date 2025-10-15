@@ -11,7 +11,7 @@ import Image from 'next/image'
 import { deleteBookFromMyLibrary } from '@/lib/libraryServices'
 import { Trash2 } from 'lucide-react'
 import type { MyBookList } from '@/types/book'
-// import EditInfoSheet from './edit-info-sheet'
+import EditInfoSheet from './edit-info-sheet'
 
 interface MyLibrarySearchResultProps {
   books: MyBookList
@@ -49,8 +49,11 @@ const MyLibrarySearchResult = ({
             return (
               <li key={book.id}>
                 <Card className='h-full p-4'>
-                  <CardAction className='flex w-full justify-end'>
-                    {/* <EditInfoSheet book={book} /> */}
+                  <CardAction className='flex w-full justify-between'>
+                    <EditInfoSheet
+                      book={book}
+                      handleGetBooksFromMyLibrary={handleGetBooksFromMyLibrary}
+                    />
                     <Button
                       onClick={() =>
                         handleDeleteBookFromMyLibrary(book.id, book.title)
