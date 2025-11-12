@@ -90,11 +90,11 @@ const GoogleSearchResult = ({ results, userName }: GoogleSearchResultProps) => {
         </Card>
       ) : (
         <ul className='3xl:grid-cols-5 4xl:grid-cols-7 5xl:grid-cols-9 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
-          {results?.map((book) => {
+          {results?.map((book, index) => {
             const info = book.volumeInfo
             const inLibrary = savedIds.has(book.id)
             return (
-              <li key={book.id}>
+              <li key={`${book.id}-${index}`}>
                 <Card className='h-full p-4'>
                   <CardAction className='flex w-full justify-between'>
                     <MoreInfoSheet book={book} />

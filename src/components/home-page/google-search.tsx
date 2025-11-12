@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useSessionStorageState } from '@/hooks/useSessionStorageState'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -42,25 +41,19 @@ import { ChevronsUpDown } from 'lucide-react'
 import { checkRowExists } from '@/lib/listServices'
 
 const GoogleSearch = () => {
-  const [filters, setFilters] = useSessionStorageState<BookSearch>(
-    'google-book-filters',
-    {
-      userBaseInput: '',
-      userFineTuneInput: '',
-      standardParameters: 'inauthor',
-      downloadable: false,
-      digitalType: 'null',
-      pageStartIndex: 0,
-      pageMaxResults: 10,
-      printType: 'all',
-      projectionFull: true,
-      orderBy: 'relevance',
-    },
-  )
-  const [results, setResults] = useSessionStorageState<GoogleBookList>(
-    'google-book-results',
-    [],
-  )
+  const [filters, setFilters] = useState<BookSearch>({
+    userBaseInput: '',
+    userFineTuneInput: '',
+    standardParameters: 'inauthor',
+    downloadable: false,
+    digitalType: 'null',
+    pageStartIndex: 0,
+    pageMaxResults: 10,
+    printType: 'all',
+    projectionFull: true,
+    orderBy: 'relevance',
+  })
+  const [results, setResults] = useState<GoogleBookList>([])
   const [userName, setUserName] = useState<string>('')
 
   const getUserName = async () => {
@@ -107,7 +100,7 @@ const GoogleSearch = () => {
     } catch (err) {
       console.error(`Search Error: ${err}`)
     }
-  }, [setResults])
+  }, [])
 
   const handleSearchGoogleBooks = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -332,7 +325,7 @@ const GoogleSearch = () => {
           </Select>
         </div>
       </section>
-      <GoogleSearchResult results={results} userName={userName} />
+      <GoogleSearchResult results={results ?? []} userName={userName} />
       <Separator className='my-4' />
       <section>
         <div className='relative my-10'>
