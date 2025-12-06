@@ -73,7 +73,7 @@ jobs:
               --env GOOGLE_BOOKS_API_KEY=$GOOGLE_BOOKS_API_KEY \
               --env USER_NAME=$USER_NAME \
               -v pnpm-store:/pnpm-store \
-              -p 3001:3000 --restart unless-stopped book-library
+              -p 127.0.0.1:3001:3000 --restart unless-stopped book-library
           EOF
 
       # 🔒 Revoke open SSH access after deployment
